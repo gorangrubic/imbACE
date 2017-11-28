@@ -54,6 +54,16 @@ namespace imbACE.Core.application
     /// <seealso cref="imbSCI.Core.data.aceAuthorNotation" />
     public class aceApplicationInfo:aceAuthorNotation
     {
+        public aceApplicationInfo() { }
+
+        public const String FOLDERNAME_CACHE = "cache";
+        public const String FOLDERNAME_REPORTS = "reports";
+        public const String FOLDERNAME_RESOURCES = "resources";
+        public const String FOLDERNAME_CONFIG = "config";
+        public const String FOLDERNAME_PLUGINS = "plugin";
+        public const String FOLDERNAME_PROJECTS = "projects";
+        public const String FOLDERNAME_LOGS = "logs";
+
         /// <summary>
         /// Message to be shown at startup
         /// </summary>

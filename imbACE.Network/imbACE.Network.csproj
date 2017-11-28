@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bdev.Net.Dns, Version=1.0.4.0, Culture=neutral, PublicKeyToken=217d47f649bccd2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bdev.Net.Dns.1.0.4\lib\Bdev.Net.Dns.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.6.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.6.5\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="imbSCI.Core, Version=0.1.6541.17791, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.Core.dll</HintPath>
     </Reference>
@@ -45,6 +51,9 @@
     </Reference>
     <Reference Include="imbSCI.Reporting, Version=0.1.6541.17792, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,6 +100,7 @@
     <Compile Include="internet\events\serverRequestReceivedEventType.cs" />
     <Compile Include="internet\formats\filenames.cs" />
     <Compile Include="internet\formats\mimeType.cs" />
+    <Compile Include="internet\NamespaceDoc.cs" />
     <Compile Include="internet\sessions\serverSession.cs" />
     <Compile Include="internet\sessions\serverSessionControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +118,73 @@
     <Compile Include="remote\instance\aceRemoteInstanceBase.cs" />
     <Compile Include="remote\instance\aceRemoteServer.cs" />
     <Compile Include="remote\servers\aceRemoteTestServer.cs" />
+    <Compile Include="tools\domainAnalysis.cs" />
+    <Compile Include="tools\domainAnalysisEngine.cs" />
+    <Compile Include="tools\imbCountryInfoEngine.cs" />
+    <Compile Include="tools\imbCountryInfoEntry.cs" />
+    <Compile Include="tools\imbDomainManager.cs" />
+    <Compile Include="tools\imbLanguageInfo.cs" />
+    <Compile Include="tools\imbNetworkTools.cs" />
+    <Compile Include="tools\imbServiceType.cs" />
+    <Compile Include="tools\imbTopLevelDomain.cs" />
+    <Compile Include="tools\imbWhoIsAnalysis.cs" />
+    <Compile Include="tools\imbWhoIsServer.cs" />
+    <Compile Include="tools\systemKnowledge.cs" />
+    <Compile Include="web\cache\cacheResponse.cs" />
+    <Compile Include="web\cache\webCacheSystem.cs" />
+    <Compile Include="web\context\webRequestContext.cs" />
+    <Compile Include="web\context\webResultContext.cs" />
+    <Compile Include="web\core\commonRequestSettings.cs" />
+    <Compile Include="web\core\domainElement.cs" />
+    <Compile Include="web\core\domainElementCollection.cs" />
+    <Compile Include="web\core\domainElementPosition.cs" />
+    <Compile Include="web\core\HtmlDocument.cs" />
+    <Compile Include="web\core\htmlDomSettings.cs" />
+    <Compile Include="web\core\requestParameter.cs" />
+    <Compile Include="web\core\requestParameterCollection.cs" />
+    <Compile Include="web\core\webLoaderBase.cs" />
+    <Compile Include="web\core\webLoaderSettings.cs" />
+    <Compile Include="web\core\webRequestApiSettings.cs" />
+    <Compile Include="web\enums\apiType.cs" />
+    <Compile Include="web\enums\contentCriteriaType.cs" />
+    <Compile Include="web\enums\executionSyncMode.cs" />
+    <Compile Include="web\enums\httpRequestMethod.cs" />
+    <Compile Include="web\enums\templateFieldWebRequest.cs" />
+    <Compile Include="web\enums\urlLoaderType.cs" />
+    <Compile Include="web\enums\webRequestActionType.cs" />
+    <Compile Include="web\enums\webRequestBlockExecuteMode.cs" />
+    <Compile Include="web\events\webLoaderEvent.cs" />
+    <Compile Include="web\events\webLoaderEventArgs.cs" />
+    <Compile Include="web\events\webLoaderEventType.cs" />
+    <Compile Include="web\events\webRequestBlockEvent.cs" />
+    <Compile Include="web\events\webRequestBlockEventArgs.cs" />
+    <Compile Include="web\events\webRequestBlockEventType.cs" />
+    <Compile Include="web\events\webRequestEvent.cs" />
+    <Compile Include="web\events\webRequestEventArgs.cs" />
+    <Compile Include="web\events\webRequestEventType.cs" />
+    <Compile Include="web\request\webRequest.cs" />
+    <Compile Include="web\request\webRequestBase.cs" />
+    <Compile Include="web\request\webRequestBlock.cs" />
+    <Compile Include="web\request\webRequestBrowser.cs" />
+    <Compile Include="web\request\webRequestClient.cs" />
+    <Compile Include="web\request\webRequestFile.cs" />
+    <Compile Include="web\request\webRequestLookup.cs" />
+    <Compile Include="web\request\webRequestType.cs" />
+    <Compile Include="web\result\dnsLookupDocument.cs" />
+    <Compile Include="web\result\responseType.cs" />
+    <Compile Include="web\result\webDocument.cs" />
+    <Compile Include="web\result\webDocumentType.cs" />
+    <Compile Include="web\result\webHeader.cs" />
+    <Compile Include="web\result\webResponse.cs" />
+    <Compile Include="web\result\webResult.cs" />
+    <Compile Include="web\result\webResultBase.cs" />
+    <Compile Include="web\result\webResultBlock.cs" />
+    <Compile Include="web\result\webResultFile.cs" />
+    <Compile Include="web\result\webResultLookup.cs" />
+    <Compile Include="web\webContentAndRequest.cs" />
+    <Compile Include="web\webLoader.cs" />
+    <Compile Include="web\webLoaderFlag.cs" />
+    <Compile Include="web\webLoadingEngine.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

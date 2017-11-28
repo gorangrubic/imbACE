@@ -39,7 +39,7 @@
     <ApplicationIcon>imbVeles_white.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>imbACE.ApplicationDemo.ConsoleApplicationDemo</StartupObject>
+    <StartupObject>imbACE.ApplicationDemo.consoleApp.ConsoleApplicationDemo</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="imbSCI.Core, Version=0.1.6541.17791, Culture=neutral, processorArchitecture=MSIL">
@@ -64,11 +64,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationDemo.cs" />
-    <Compile Include="CommandConsoleDemo.cs" />
-    <Compile Include="CommandConsoleDemoState.cs" />
-    <Compile Include="CommandConsoleDemoWorkspace.cs" />
-    <Compile Include="ConsoleApplicationDemo.cs" />
+    <Compile Include="terminalApp\ApplicationDemo.cs" />
+    <Compile Include="consoleApp\CommandConsoleDemo.cs" />
+    <Compile Include="consoleApp\CommandConsoleDemoState.cs" />
+    <Compile Include="consoleApp\CommandConsoleDemoWorkspace.cs" />
+    <Compile Include="consoleApp\ConsoleApplicationDemo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +93,8 @@
       <Name>imbACE.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="consoleToTerminalApp\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

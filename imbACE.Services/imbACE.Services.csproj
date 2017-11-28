@@ -62,12 +62,6 @@
     <Compile Include="aceCommons.cs" />
     <Compile Include="application\aceApplicationBase.cs" />
     <Compile Include="application\aceConsoleApplicationBase.cs" />
-    <Compile Include="platform\cache\cacheDataFormatEnum.cs" />
-    <Compile Include="platform\cache\cacheManagerBase.cs" />
-    <Compile Include="platform\cache\cacheResponseForType.cs" />
-    <Compile Include="platform\cache\cacheResponseForType_2.cs" />
-    <Compile Include="platform\cache\cacheSimpleBase.cs" />
-    <Compile Include="platform\cache\cacheSystem.cs" />
     <Compile Include="platform\consolePlatform.cs" />
     <Compile Include="platform\consolePlatformExtensions.cs" />
     <Compile Include="platform\core\platformBase.cs" />
@@ -97,8 +91,8 @@
     <Compile Include="console\aceCommandConsole.cs" />
     <Compile Include="console\aceCommandConsoleIOEncode.cs" />
     <Compile Include="console\aceCommandEntry.cs" />
-    <Compile Include="console\aceConsolePluginBase.cs" />
-    <Compile Include="console\aceConsolePluginForFiles.cs" />
+    <Compile Include="consolePlugins\aceConsolePluginBase.cs" />
+    <Compile Include="consolePlugins\aceConsolePluginForFiles.cs" />
     <Compile Include="console\aceConsoleScript.cs" />
     <Compile Include="console\IAceAdvancedConsole.cs" />
     <Compile Include="application\aceTerminalApplication.cs" />

@@ -50,6 +50,7 @@ namespace imbACE.Services.console
     using System.ComponentModel;
     using imbACE.Core.core;
     using imbSCI.Core.data;
+    using imbACE.Core.application;
 
     public abstract class aceAdvancedConsoleStateBase : aceSettingsStandaloneBase
     {
@@ -95,7 +96,7 @@ namespace imbACE.Services.console
         {
             get
             {
-                return imbACE.Services.application.aceApplicationBase.FOLDERNAME_CONFIG +  "\\" + this.GetType().Name + "_state.xml";
+                return aceApplicationInfo.FOLDERNAME_CONFIG +  "\\" + this.GetType().Name + "_state.xml";
             }
         }
 
@@ -109,7 +110,7 @@ namespace imbACE.Services.console
         {
             get
             {
-                return imbACE.Services.application.aceApplicationBase.FOLDERNAME_PROJECTS + "\\" + this.GetType().Name + "_jobs\\";
+                return aceApplicationInfo.FOLDERNAME_PROJECTS + "\\" + this.GetType().Name + "_jobs\\";
             }
         }
 
