@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55134E32-7CA1-4896-9F86-2FAAB73B24B5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>imbACE.Core</RootNamespace>
+    <AssemblyName>imbACE.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+    <DocumentationFile>bin\Debug\imbACE.Core.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="imbSCI.Core, Version=0.1.6541.17791, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Data, Version=0.1.6541.14062, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.DataComplex, Version=0.1.6541.17792, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.DataComplex.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Reporting, Version=0.1.6541.17792, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.0\lib\net40\imbSCI.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="application\aceApplicationInfo.cs" />
+    <Compile Include="application\aceApplicationSettings.cs" />
+    <Compile Include="application\aceApplicationState.cs" />
+    <Compile Include="application\IAceApplicationBase.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherEventMode.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherType.cs" />
+    <Compile Include="ataman\spaceWatch\atamanSpaceLimiter.cs" />
+    <Compile Include="collection\IAceComplexCollection.cs" />
+    <Compile Include="commands\aceCommandEvent.cs" />
+    <Compile Include="commands\aceCommandEventArgs.cs" />
+    <Compile Include="commands\aceCommandEventType.cs" />
+    <Compile Include="commands\commandBase.cs" />
+    <Compile Include="commands\commandExpression.cs" />
+    <Compile Include="commands\commandExpressionCollection.cs" />
+    <Compile Include="commands\commandExpressionFormat.cs" />
+    <Compile Include="commands\commandlineArguments.cs" />
+    <Compile Include="commands\commandlineCommand.cs" />
+    <Compile Include="commands\commandLineEntry.cs" />
+    <Compile Include="commands\commandLineExtensions.cs" />
+    <Compile Include="commands\commandLineFormat.cs" />
+    <Compile Include="commands\commandLineSpecialFunction.cs" />
+    <Compile Include="commands\commandSet.cs" />
+    <Compile Include="commands\IAceCommand.cs" />
+    <Compile Include="commands\menu\aceCommandLineOptions.cs" />
+    <Compile Include="commands\menu\aceMenuItemMeta.cs" />
+    <Compile Include="commands\menu\aceOperationArgs.cs" />
+    <Compile Include="commands\menu\core\aceMenu.cs" />
+    <Compile Include="commands\menu\core\aceMenuItem.cs" />
+    <Compile Include="commands\menu\core\aceMenuItemCollection.cs" />
+    <Compile Include="commands\menu\render\menuRenderFlag.cs" />
+    <Compile Include="commands\menu\render\menuRenderFlags.cs" />
+    <Compile Include="commands\menu\render\renderBase.cs" />
+    <Compile Include="commands\menu\render\renderForTerminal.cs" />
+    <Compile Include="commands\menu\render\renderTask.cs" />
+    <Compile Include="commands\menu\render\renderTaskList.cs" />
+    <Compile Include="commands\snippet\snippet.cs" />
+    <Compile Include="commands\snippet\snippetParameter.cs" />
+    <Compile Include="commands\tree\commandTree.cs" />
+    <Compile Include="commands\tree\commandTreeDescription.cs" />
+    <Compile Include="commands\tree\commandTreeNodeLevel.cs" />
+    <Compile Include="commands\tree\commandTreeReportTools.cs" />
+    <Compile Include="commands\tree\commandTreeTools.cs" />
+    <Compile Include="core\aceBindable.cs" />
+    <Compile Include="core\aceComponentBase.cs" />
+    <Compile Include="core\aceLog.cs" />
+    <Compile Include="core\aceLogGlobalFlags.cs" />
+    <Compile Include="core\aceLogRegistry.cs" />
+    <Compile Include="core\aceSettingsBase.cs" />
+    <Compile Include="core\aceSettingsStandaloneBase.cs" />
+    <Compile Include="core\builderForLog.cs" />
+    <Compile Include="core\clipboard.cs" />
+    <Compile Include="core\clipboardGetter.cs" />
+    <Compile Include="core\clipboardSetter.cs" />
+    <Compile Include="core\diagnostic\builderForLogEnhanced.cs" />
+    <Compile Include="core\diagnostic\callerInfo.cs" />
+    <Compile Include="core\diagnostic\exceptionExtensions.cs" />
+    <Compile Include="core\diagnostic\imbConsoleLog.cs" />
+    <Compile Include="core\diagnostic\imbConsoleLogInstruction.cs" />
+    <Compile Include="core\diagnostic\imbStopwatch.cs" />
+    <Compile Include="core\diagnostic\imbSystemInfo.cs" />
+    <Compile Include="core\diagnostic\imbTimeStampFormat.cs" />
+    <Compile Include="core\diagnostic\logEvent.cs" />
+    <Compile Include="core\diagnostic\systemInfoData.cs" />
+    <Compile Include="core\diagnostic\systemStatusData.cs" />
+    <Compile Include="core\diagnostic\timeStamp.cs" />
+    <Compile Include="core\exceptions\aceExceptionInfo.cs" />
+    <Compile Include="core\exceptions\aceExceptionInfoBase.cs" />
+    <Compile Include="core\exceptions\aceExceptionTools.cs" />
+    <Compile Include="core\exceptions\aceGeneralException.cs" />
+    <Compile Include="core\exceptions\aceNotImplemented.cs" />
+    <Compile Include="core\exceptions\aceObligationException.cs" />
+    <Compile Include="core\exceptions\aceScienceException.cs" />
+    <Compile Include="core\exceptions\IAceExceptionSerializable.cs" />
+    <Compile Include="core\interfaces\IAccessabilityFeatures.cs" />
+    <Compile Include="core\interfaces\ICacheSignature.cs" />
+    <Compile Include="core\interfaces\IDynamicGraphSource.cs" />
+    <Compile Include="core\interfaces\IDynamicListSource.cs" />
+    <Compile Include="core\interfaces\IDynamicSource.cs" />
+    <Compile Include="core\interfaces\IDynamicTreeSource.cs" />
+    <Compile Include="core\interfaces\IDynamicTreeSourceBase.cs" />
+    <Compile Include="core\interfaces\IGlobalResource.cs" />
+    <Compile Include="core\interfaces\ILogProgressReportInformation.cs" />
+    <Compile Include="core\interfaces\IPrioritySortable.cs" />
+    <Compile Include="core\logSystem.cs" />
+    <Compile Include="core\settings\aceCoreSettings.cs" />
+    <Compile Include="core\StaHelper.cs" />
+    <Compile Include="core\workload\workloadControlerBase.cs" />
+    <Compile Include="core\workload\workloadControlerRecord.cs" />
+    <Compile Include="core\workload\workloadDecision.cs" />
+    <Compile Include="data\aceSubEnum.cs" />
+    <Compile Include="data\enumerableExtensions.cs" />
+    <Compile Include="enums\platform\inputReadMode.cs" />
+    <Compile Include="enums\platform\platformColorName.cs" />
+    <Compile Include="enums\platform\platformColorRole.cs" />
+    <Compile Include="enums\platform\userInterfaceType.cs" />
+    <Compile Include="enums\platform\windowSize.cs" />
+    <Compile Include="enums\render\menuRendererTask.cs" />
+    <Compile Include="enums\render\screenOptionFlag.cs" />
+    <Compile Include="events\aceEventGeneralArgs.cs" />
+    <Compile Include="events\aceEventOrigin.cs" />
+    <Compile Include="events\aceEventType.cs" />
+    <Compile Include="ataman\aceSystemAtaman.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcher.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherEvent.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherEventArgs.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherEventCollection.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherEventType.cs" />
+    <Compile Include="ataman\fileWatch\fileWatcherException.cs" />
+    <Compile Include="interfaces\IGetToSetFromString.cs" />
+    <Compile Include="data\measurement\performanceBase.cs" />
+    <Compile Include="data\measurement\performanceResourcesTake.cs" />
+    <Compile Include="data\measurement\performanceTake.cs" />
+    <Compile Include="enums\aceCommonDefaultPath.cs" />
+    <Compile Include="enums\contentStructureType.cs" />
+    <Compile Include="enums\defaultSplitingLevel.cs" />
+    <Compile Include="enums\outputFolder.cs" />
+    <Compile Include="enums\typedParamDeclarationType.cs" />
+    <Compile Include="events\aceEventArgsBase.cs" />
+    <Compile Include="extensions\io\externalToolExtensions.cs" />
+    <Compile Include="extensions\io\globalResourceManager.cs" />
+    <Compile Include="interfaces\IDisplayMenuInfo.cs" />
+    <Compile Include="interfaces\IFromToString.cs" />
+    <Compile Include="interfaces\ILearn.cs" />
+    <Compile Include="interfaces\ILogableWithError.cs" />
+    <Compile Include="interfaces\ILogReportInformation.cs" />
+    <Compile Include="interfaces\ILogSerializable.cs" />
+    <Compile Include="interfaces\ILogSerializableProvider.cs" />
+    <Compile Include="interfaces\interfaces\IAceLogableWithInput.cs" />
+    <Compile Include="interfaces\IObjectWithUrl.cs" />
+    <Compile Include="interfaces\ISqlEntitySupported.cs" />
+    <Compile Include="interfaces\metaDocumentRootSet.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="interfaces\primitives\aceStringBuilder.cs" />
+    <Compile Include="interfaces\primitives\ICollectionIndex.cs" />
+    <Compile Include="interfaces\primitives\ILimitedValueRange.cs" />
+    <Compile Include="interfaces\primitives\imbNLPbasic.cs" />
+    <Compile Include="interfaces\primitives\imbNLPsettings.cs" />
+    <Compile Include="interfaces\primitives\objectWithNameAndDescription.cs" />
+    <Compile Include="operations\aceCommandLineCommonOptionsExecutor.cs" />
+    <Compile Include="operations\aceMenuItemAttribute.cs" />
+    <Compile Include="operations\aceMenuItemAttributeRole.cs" />
+    <Compile Include="operations\aceMenuItemGroup.cs" />
+    <Compile Include="operations\aceOperationSetExecutorBase.cs" />
+    <Compile Include="operations\IAceCommandConsole.cs" />
+    <Compile Include="operations\IAceConsoleScript.cs" />
+    <Compile Include="operations\IAceOperationSetExecutor.cs" />
+    <Compile Include="operations\IPlatform.cs" />
+    <Compile Include="plugins\core\acePluginApplicationContext.cs" />
+    <Compile Include="plugins\core\acePluginBase.cs" />
+    <Compile Include="plugins\core\IAcePluginBase.cs" />
+    <Compile Include="plugins\deployer\acePluginDeployer.cs" />
+    <Compile Include="plugins\deployer\IAcePluginDeployer.cs" />
+    <Compile Include="plugins\deployer\IAcePluginDeployerBase.cs" />
+    <Compile Include="plugins\NamespaceDoc.cs" />
+    <Compile Include="plugins\pluginManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sound\beep\beepDuration.cs" />
+    <Compile Include="sound\beep\beepRoleType.cs" />
+    <Compile Include="sound\beep\beepTone.cs" />
+    <Compile Include="sound\beep\oneBeep.cs" />
+    <Compile Include="sound\sequence\beepSequence.cs" />
+    <Compile Include="sound\soundExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imbACE.Core.licenseheader" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="process\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

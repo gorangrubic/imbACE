@@ -1,0 +1,61 @@
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ACE EventCaster</Title>
+      <Shortcut>_aceECast</Shortcut>
+      <Description>Snippet for the casting side of an imbACE event</Description>
+      <Author>imbVeles</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>eventName</ID>
+          <ToolTip>Human-meaningful name of the event</ToolTip>
+          <Default>Name</Default>
+        </Literal>
+        <Literal>
+          <ID>owner</ID>
+          <ToolTip>Owner type or host where event happen</ToolTip>
+          <Default>isInState</Default>
+        </Literal>
+        <Literal>
+          <ID>class</ID>
+          <Function>ClassName()</Function>   
+          <Default>ClassNamePlaceholder</Default>  
+        </Literal>
+        <Literal>
+          <ID>type</ID>
+          <ToolTip>Type of the event</ToolTip>
+          <Default>unknown</Default>
+        </Literal>
+        <Literal>
+          <ID>origin</ID>
+          <ToolTip>Real origin of the event</ToolTip>
+          <Default>unknown</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+<![CDATA[ 
+    /// <summary>Event handler for <see cref="aceEventType.$type$"/>" at <see cref="aceEventOrigin.$origin$"/>, to hook reaction method on to. </summary>;
+    public event EventHandler<aceEventGeneralArgs> onEvent$origin$$type$;
+    /// <summary> The event $type$ at $origin$ caster, with optional pre-created arguments. </summary>
+    /// <param name="e">Optional, prefabricated arguments - to provide specific information to particular cause of the event.</param>
+    /// <remarks>
+    ///   <para>Invokes <see cref="onEvent$origin$$type$"/>, with <see cref="aceEventType.$type$"/> and <see cref="aceEventOrigin.$origin$"/></para>
+    /// </remarks>
+    protected virtual void callEvent$origin$$type$(aceEventGeneralArgs e=null) {
+        if (e == null) e = new aceEventGeneralArgs();
+        if (e.type == aceEventType.unknown) e.type = aceEventType.$type$;
+        if (e.Origin == aceEventOrigin.unknown) e.Origin = aceEventOrigin.$origin$;
+        if (e.RelatedObject == null) e.RelatedObject = null;
+        e.Message = "";
+        if (onEvent$origin$$type$ != null) onEvent$origin$$type$(this, e);
+    }
+]]>
+$end$</Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
