@@ -52,6 +52,9 @@ namespace imbACE.Core.application
     /// <seealso cref="imbSCI.Data.interfaces.IObjectWithName" />
     public interface IAceApplicationBase
     {
+
+        List<String> commandLineArguments { get; }
+
         /// <summary>
         /// Main log-output for the application
         /// </summary>

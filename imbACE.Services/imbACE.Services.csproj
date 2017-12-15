@@ -34,7 +34,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>imbACE.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="imbSCI.Core, Version=0.1.6558.28706, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Data, Version=0.1.6558.26332, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.DataComplex, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.DataComplex.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Reporting, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Reporting.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -107,6 +122,7 @@
     <Compile Include="terminal\dialogs\dialogMenuItem.cs" />
     <Compile Include="terminal\dialogs\dialogMessageBoxWithOptions.cs" />
     <Compile Include="terminal\dialogs\dialogPageViewerWithMenu.cs" />
+    <Compile Include="terminal\dialogs\dialogs.cs" />
     <Compile Include="terminal\dialogs\dialogSelectFile.cs" />
     <Compile Include="terminal\dialogs\dialogSize.cs" />
     <Compile Include="terminal\dialogs\dialogUniversalTool.cs" />
@@ -167,6 +183,7 @@
     <Compile Include="textBlocks\textSection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="imbACE.Services.licenseheader" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -175,26 +192,13 @@
     <Folder Include="platform\output\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Core\imbSCI.Core.csproj">
-      <Project>{d02f731c-3a1c-4094-ba85-a8b563906e7e}</Project>
-      <Name>imbSCI.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.DataComplex\imbSCI.DataComplex.csproj">
-      <Project>{84869e5f-cc21-425d-beb6-5ef4d4773b15}</Project>
-      <Name>imbSCI.DataComplex</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Data\imbSCI.Data.csproj">
-      <Project>{22b51684-1a11-4523-8c5c-fc6d76818bc4}</Project>
-      <Name>imbSCI.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Reporting\imbSCI.Reporting.csproj">
-      <Project>{d50919e9-84f1-4dc8-a101-3c114389b067}</Project>
-      <Name>imbSCI.Reporting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\imbACE.Core\imbACE.Core.csproj">
       <Project>{55134e32-7ca1-4896-9f86-2faab73b24b5}</Project>
       <Name>imbACE.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="imbACE.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

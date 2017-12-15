@@ -34,9 +34,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>imbACE.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack, Version=1.6.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.6.5\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Core, Version=0.1.6558.28706, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Data, Version=0.1.6558.26332, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.DataComplex, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.DataComplex.dll</HintPath>
+    </Reference>
+    <Reference Include="imbSCI.Reporting, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Reporting.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.10.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.10\lib\net40\MySql.Data.dll</HintPath>
@@ -263,24 +278,8 @@
     <None Include="imbACE.Core.licenseheader" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Core\imbSCI.Core.csproj">
-      <Project>{d02f731c-3a1c-4094-ba85-a8b563906e7e}</Project>
-      <Name>imbSCI.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.DataComplex\imbSCI.DataComplex.csproj">
-      <Project>{84869e5f-cc21-425d-beb6-5ef4d4773b15}</Project>
-      <Name>imbSCI.DataComplex</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Data\imbSCI.Data.csproj">
-      <Project>{22b51684-1a11-4523-8c5c-fc6d76818bc4}</Project>
-      <Name>imbSCI.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\imbSCI\imbSCI.Reporting\imbSCI.Reporting.csproj">
-      <Project>{d50919e9-84f1-4dc8-a101-3c114389b067}</Project>
-      <Name>imbSCI.Reporting</Name>
-    </ProjectReference>
+    <Content Include="imbACE.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

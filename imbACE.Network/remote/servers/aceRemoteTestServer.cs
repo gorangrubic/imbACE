@@ -48,7 +48,7 @@ namespace imbACE.Network.remote.servers
     using imbSCI.Reporting;
     using imbSCI.Reporting.enums;
     using imbSCI.Reporting.interfaces;
-    using imbACE.Services;
+    
     using System.Threading;
 
     /// <summary>
@@ -98,7 +98,7 @@ namespace imbACE.Network.remote.servers
                         Random random = new Random();
                         for (int ri = 0; ri < _rndTimes; ri++)
                         {
-                            string rnd = aceCommonExtensions.getRandomString(32);
+                            string rnd = imbSCI.Core.extensions.text.imbStringGenerators.getRandomString(32); //aceCommonExtensions.getRandomString(32);
 
                             int rnt = random.Next(10)*200;
 

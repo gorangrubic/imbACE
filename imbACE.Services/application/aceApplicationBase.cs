@@ -62,6 +62,7 @@ namespace imbACE.Services.application
     using imbSCI.Core.reporting;
     using imbACE.Core.core.exceptions;
     using imbACE.Services.terminal;
+    using System.Collections.Generic;
 
 
 
@@ -191,6 +192,8 @@ namespace imbACE.Services.application
         {
             logger = _logger;
 
+            commandLineArguments.AddRange(args);
+
             AppDomain.CurrentDomain.UnhandledException += ReactTo_UnhandledException;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
@@ -254,6 +257,8 @@ namespace imbACE.Services.application
             // <------------ calling "loaded" event
             callEventApplicationLoaded();
         }
+
+        public List<String> commandLineArguments { get; set; } = new List<string>();
 
 
         /// <summary>

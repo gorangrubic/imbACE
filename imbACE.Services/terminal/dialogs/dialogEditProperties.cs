@@ -50,9 +50,11 @@ namespace imbACE.Services.terminal.dialogs
         /// </summary>
         /// <param name="platform">Platforma na kojoj se prikazuje dijalog</param>
         /// <param name="targetObject">Objekat koi se edituje</param>
-        /// <param name="spec">Property za koji se edituje ovaj objekat</param>
-        /// <param name="hostTitle">Naslov host->property objekta</param>
-        /// <returns>Kolekcija rezultata</returns>
+        /// <param name="description">The description.</param>
+        /// <param name="hostTitle">Naslov host-&gt;property objekta</param>
+        /// <returns>
+        /// Kolekcija rezultata
+        /// </returns>
         public static Object open(IPlatform platform, Object targetObject, String description, String hostTitle)
         {
             dialogEditProperties dialog = new dialogEditProperties(platform, targetObject, hostTitle, description);
