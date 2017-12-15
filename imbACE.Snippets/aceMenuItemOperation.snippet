@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets 
+    xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>aceOperationForMenu</Title>
+            <Shortcut>_aceOperationMenu</Shortcut>
+            <Description>Declaration of a method without arguments, usually for the menu of a Screen</Description>
+            <Author>imbVeles</Author>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal>
+                    <ID>type</ID>
+                    <ToolTip>Property type</ToolTip>
+                    <Default>aceMenu</Default>
+                </Literal>
+                <Literal>
+                    <ID>name</ID>
+                    <ToolTip>Name of the method</ToolTip>
+                    <Default>Test</Default>
+                </Literal>
+                <Literal>
+                    <ID>key</ID>
+                    <ToolTip>Menu item key shortcut</ToolTip>
+                    <Default>ESC</Default>
+                </Literal>
+                <Literal>
+                    <ID>ehelp</ID>
+                    <ToolTip>help line / description</ToolTip>
+                    <Default>What is purpose of this?</Default>
+                </Literal>
+                <Literal>
+                    <ID>help</ID>
+                    <ToolTip>help line / description</ToolTip>
+                    <Default>What it will do?</Default>
+                </Literal>
+                <Literal>
+                    <ID>group</ID>
+                    <ToolTip>Functional group, used for mennu rendering</ToolTip>
+                    <Default>run</Default>
+                </Literal>
+            </Declarations>
+            <Code Language="csharp">
+                <![CDATA[
+    [Display(GroupName = "$group$", Name ="$name$", ShortName = "$key$",Description ="$ehelp$")]
+    [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "$help$")]
+    /// <summary>$ehelp$</summary> 
+	/// <remarks><para>$help$</para></remarks>
+	/// <seealso cref="aceOperationSetExecutorBase"/>
+	public void aceOperation_$group$$name$()
+	{
+        // your code
+	}
+	$end$]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

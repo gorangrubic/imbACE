@@ -118,14 +118,15 @@ namespace imbACE.Core.commands.menu.core
             if (metaObject is aceOperationArgs)
             {
                 aceOperationArgs marg = metaObject as aceOperationArgs;
+               
                 /*
                 if (inputLine != "")
                 {
                     marg.paramSet.addFromString(inputLine);
                 }*/
 
-                Object[] array = new Object[1]; // { marg};
-                array[0] = marg;
+                Object[] array = marg.getInvokeArray();
+
                 if (marg.method != null)
                 {
                      marg.method.Invoke(marg.executor, array);

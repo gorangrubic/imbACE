@@ -79,8 +79,27 @@ namespace imbACE.Services.console
         /// </summary>
         protected aceAdvancedConsole()
         {
+           
+        }
+
+        /// <summary>
+        /// Get's executed on console startup
+        /// </summary>
+        public override void onStartUp()
+        {
             state.Poke();
             workspace.Poke();
+
+
+            if (!state.doRunScriptOnStartup.isNullOrEmpty())
+            {
+                var autoScript = workspace.loadScript(state.doRunScriptOnStartup);
+                log("Autoexecution script: " + autoScript.info.Name + " starting");
+                executeScript(autoScript);
+            } else
+            {
+                log("No auto execution script set");
+            }
         }
 
         /// <summary>
@@ -208,65 +227,23 @@ namespace imbACE.Services.console
 
 
 
-        [Display(GroupName = "help", Name = "ExportHelp", ShortName = "", Description = "Exports help file into current state project folder")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Writes a txt file with content equeal to the result of help command")]
-        /// <summary>Exports help file into current state project folder</summary> 
-        /// <remarks><para>Writes a txt file with content equeal to the result of help command</para></remarks>
-        /// <param name="filename">help.txt</param>
-        /// <param name="open">true</param>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_helpExportHelp(
-            [Description("help.txt")] String filename = "word",
-            [Description("true")] Boolean open = true)
-        {
-            builderForMarkdown mdBuilder = new builderForMarkdown();
-
-            commandSetTree.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
-            helpContent = mdBuilder.GetContent();
-
-            String p = workspace.folder.pathFor(filename);
-            if (p.saveToFile(helpContent))
-            {
-                response.log("Help file saved to: " + p);
-            }
-            if (open) externalTool.notepadpp.run(p);
-        }
 
 
 
 
-
-
-
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "canonicalForm")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "scriptProcess")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "ScriptProcess")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Processing script into selected form")]
+        [Display(GroupName = "script", Name = "Process", ShortName = "", Description = "Processing script into selected form")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It will load the specified script and process it into selected format")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runScriptProcess.md")]
-        [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "script=\"*\":String;format=explicitFormat:commandLineFormat;askForFormat=true:Boolean;")]
-        /// <summary>
-        /// Method of menu option ScriptProcess (key:canonicalForm). <args> expects param: script:String;format:commandLineFormat;askForFormat:Boolean;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters:  script:String;format:commandLineFormat;askForFormat:Boolean;</param>
-        /// <remarks>
-        /// <para>It will load the specified script and process it into selected format</para>
-        /// <para>Processing script into selected form</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+        /// <summary>Processing script into selected form</summary> 
+        /// <remarks><para>It will load the specified script and process it into selected format</para></remarks>
+        /// <param name="script">Filename of script file to process</param>
+        /// <param name="format">Format to process script into</param>
+        /// <param name="askForFormat">Prompt user to choose the format</param>
         /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runScriptProcess(aceOperationArgs args)
+        public void aceOperation_scriptProcess(
+            [Description("Filename of script file to process")] String script = "script.ace",
+            [Description("Format to process script into")] commandLineFormat format = commandLineFormat.explicitFormat,
+            [Description("Prompt user to choose the format")] Boolean askForFormat = true)
         {
-            
-
-            String script = args.Get<String>("script");
-            commandLineFormat format = args.Get<commandLineFormat>("format");
-            Boolean askForFormat = args.Get<Boolean>("askForFormat");
-
-            
 
             if (script == "*")
             {
@@ -281,42 +258,27 @@ namespace imbACE.Services.console
 
             var ace_script = workspace.loadScript(script);
 
-            String scriptName = aceTerminalInput.askForString("Please enter filename for reformated script:", ace_script.info.Name);
+            String scriptName = aceTerminalInput.askForString("Please enter filename for reformatted script:", ace_script.info.Name);
 
             var newScript = ace_script.GetScriptInForm(this, format, workspace.folder[aceCCFolders.scripts].pathFor(scriptName));
-            
-
 
         }
 
 
 
-
-
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "reset")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "reset")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "ResetState")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Creating blank work folder (job/project) after saving the curent")]
+        [Display(GroupName = "project", Name = "Reset", ShortName = "", Description = "Creating blank work folder (job/project) after saving the current")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It will ask you for new job/state name and save the current state before cleaning the memory. If _autorename_ is true it will make new name for new state if the specified one is already taken.")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runResetCurrentState.md")]
-        [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "name=\"analytic\":String;")]
         /// <summary>
-        /// Method of menu option ResetCurrentState (key:r). <args> expects param: name=\"analytic\":String;savecurrent=true:Boolean;autorename=true:Boolean;
+        /// Creating blank work folder (job/project) after saving the current
         /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters: :type;paramb:type;</param>
+        /// <param name="name">The name for new project</param>
         /// <remarks>
-        /// <para>It will ask you for new job/state name and save the current state before cleaning the memory</para>
-        /// <para>Creating blank work state (job/project) after saving the curent</para>
-        /// <para>Message if item disabled: (disabled)</para>
+        /// It will ask you for new job/state name and save the current state before cleaning the memory. If _autorename_ is true it will make new name for new state if the specified one is already taken.
         /// </remarks>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runResetCurrentState(aceOperationArgs args)
+        /// <seealso cref="aceOperationSetExecutorBase" />
+        public void aceOperation_projectReset(
+            [Description("--")] String name = "newproject")
         {
-            String name = args.Get<String>("name");
-
             name = workspace.getNewProjectName(name);
 
             state.currentProjectName = name;
@@ -328,54 +290,20 @@ namespace imbACE.Services.console
 
 
 
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "sedit")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "script_edit")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "ScriptEdit")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "edit")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Opens specified script file for editing in default external tool")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "If the script file don't exist it will create new one")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "filename=\"newscript\":String;")]
-        /// <summary>
-        /// Aces the operation edit script edit.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        public void aceOperation_editScriptEdit(aceOperationArgs args)
-        {
-            String filename = args.Get<String>("filename");
-            var fi = workspace.getScriptFileInfo(filename);
 
-            externalToolExtensions.run(externalTool.notepadpp, fi.FullName);
-            
-        }
-
-
-
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "exe")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "script")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "ExecuteScript")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Basic automation facility: reads lines from the script file and executes it as it was typed by the console user. If filename parameter is * it will ask user to select script to load.")]
+        [Display(GroupName = "script", Name = "Execute", ShortName = "exe", Description = "Basic automation facility: reads lines from the script file and executes it as it was typed by the console user. If filename parameter is * it will ask user to select script to load.")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It opens the specified script (.ace) file from the scripts folder and performs commands from the script")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runExecuteScript.md")]
-        [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "filename=\"*\":String;repeat=1:Int32;delay=10:Int32;")]
-        /// <summary>
-        /// Method of menu option ExecuteScript (key:exe). <args> expects param: filename=\"autoexec.txt\":String;repeat=1:Int32;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters: filename=\"autoexec.txt\":String;repeat=1:Int32;</param>
-        /// <remarks>
-        /// <para>It opens the specified script (.txt) file from the scripts folder and performs commands from the script</para>
-        /// <para>Basic automation facility: reads lines from the script file and executes it as it was typed by the console user</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+        /// <summary>Basic automation facility: reads lines from the script file and executes it as it was typed by the console user. If filename parameter is * it will ask user to select script to load.</summary> 
+        /// <remarks><para>It opens the specified script (.ace) file from the scripts folder and performs commands from the script</para></remarks>
+        /// <param name="filename">Filename for script to execute</param>
+        /// <param name="delay">Delay milliseconds between execution of each line/commands</param>
+        /// <param name="repeat">Number of times to repeat the script</param>
         /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runExecuteScript(aceOperationArgs args)
+        public void aceOperation_scriptExecute(
+            [Description("Filename for script to execute")] String filename = "script.ace",
+            [Description("Delay milliseconds between execution of each line/commands")] Int32 delay = 5,
+            [Description("Number of times to repeat the script")] Int32 repeat = 1)
         {
-            String filename = args.Get<String>("filename");
-            Int32 delay = args.Get<Int32>("delay");
-            Int32 repeat = args.Get<Int32>("repeat");
 
             if (filename == "*")
             {
@@ -397,32 +325,51 @@ namespace imbACE.Services.console
         }
 
 
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "templateScript")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "templateScript")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "TemplateScript")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Uses template script file to dynamically create customized execution script")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It loads specified template script file and applies provided parameters to the {n} template placeholders")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runTemplateScript.md")]
-        [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "templateName=\"performanceTestTemplate\":String;parameters=\"2,SM-LSD,1,preloadLexicon\":String;saveScript=true:Boolean;")]
-        /// <summary>
-        /// Method of menu option TemplateScript (key:templateScript). <args> expects param: templateName:String;parameteres:String;saveScript:Boolean;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters:  templateName:String;parameteres:String;saveScript:Boolean;</param>
-        /// <remarks>
-        /// <para>It loads specified template script file and applies provided parameters to the {n} template placeholders</para>
-        /// <para>Uses template script file to dynamically create customized execution script</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+
+
+
+
+        [Display(GroupName = "help", Name = "ExportHelp", ShortName = "", Description = "Exports help file into current state project folder")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Writes a txt file with content equal to the result of help command")]
+        /// <summary>Exports help file into current state project folder</summary> 
+        /// <remarks><para>Writes a txt file with content equal to the result of help command</para></remarks>
+        /// <param name="filename">help.txt</param>
+        /// <param name="open">true</param>
         /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runTemplateScript(aceOperationArgs args)
+        public void aceOperation_helpExportHelp(
+            [Description("help.txt")] String filename = "help.txt",
+            [Description("true")] Boolean open = true)
         {
-            
-            String templateName = args.Get<String>("templateName");
-            String parameters = args.Get<String>("parameters");
-            Boolean saveScript = args.Get<Boolean>("saveScript");
+            builderForMarkdown mdBuilder = new builderForMarkdown();
+
+            commandSetTree.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
+            helpContent = mdBuilder.GetContent();
+
+            String p = workspace.folder.pathFor(filename);
+            if (p.saveToFile(helpContent))
+            {
+                response.log("Help file saved to: " + p);
+            }
+            if (open) externalTool.notepadpp.run(p);
+        }
+
+
+
+
+
+        [Display(GroupName = "script", Name = "Template", ShortName = "", Description = "Uses template script file to dynamically create customized execution script")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It loads specified template script file and applies provided parameters to the {n} template placeholders")]
+        /// <summary>Uses template script file to dynamically create customized execution script</summary> 
+        /// <remarks><para>It loads specified template script file and applies provided parameters to the {n} template placeholders</para></remarks>
+        /// <param name="templateName">Name of template file</param>
+        /// <param name="parameters">Comma separated values for parameters</param>
+        /// <param name="saveScript">true</param>
+        /// <seealso cref="aceOperationSetExecutorBase"/>
+        public void aceOperation_scriptTemplate(
+            [Description("Name of template file")] String templateName = "word",
+            [Description("Comma separated values for parameters")] String parameters = "2,SM-LSD,1,preloadLexicon",
+            [Description("true")] Boolean saveScript = true)
+        {
 
             String[] pars = parameters.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             aceConsoleScript script = workspace.loadScript(templateName);
@@ -433,15 +380,15 @@ namespace imbACE.Services.console
             if (scriptInstance.isReady)
             {
                 executeScript(scriptInstance);
-            } else
+            }
+            else
             {
                 output.log("Script instance [" + scriptInstance.info.Name + "] creation from template script [" + script.info.Name + "] failed to construct. Check number of parameters!");
             }
 
-
         }
 
-
+        
     }
 
 }

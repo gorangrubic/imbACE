@@ -126,6 +126,19 @@ namespace imbACE.Services.console
 
 
 
+        /// <summary>
+        /// Gets called during workspace construction, the method should initiate any additional subdirectories that console's project uses
+        /// </summary>
+        /// <remarks>
+        /// <example>
+        /// Place inside initiation of additional directories, required for your console's project class (inheriting: <see cref="aceAdvancedConsoleStateBase"/>)
+        /// <code>
+        /// <![CDATA[
+        /// folderName = folder.Add(nameof(folderName), "Caption", "Description");
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </remarks>
         public abstract void setAdditionalWorkspaceFolders();
         
 

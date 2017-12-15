@@ -69,7 +69,7 @@ namespace imbACE.Core.commands.menu
         /// <param name="__item">The item.</param>
         /// <param name="__method">The method.</param>
         /// <param name="__component">The component.</param>
-        public aceOperationArgs(aceOperationSetExecutorBase __executor, aceMenuItemCollection __menu, aceMenuItem __item, MethodInfo __method, IAceComponent __component)
+        public aceOperationArgs(aceOperationSetExecutorBase __executor, aceMenuItemCollection __menu, aceMenuItem __item, MethodInfo __method, IAceComponent __component=null)
         {
             _executor = __executor;
             _menu = __menu;

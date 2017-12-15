@@ -51,13 +51,13 @@ namespace imbACE.Core.plugins
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// <para>This namespace covers the plugin system from both sides of implementation.</para>
+    /// <para>Namespace covers the external plug-in system from both sides of implementation.</para>
     /// </summary>
     /// <remarks>
     /// <para>This is initial version, still to be improved</para>
     /// <list>
     /// 	<listheader>
-    ///			<term>Main parts of the plugin system</term>
+    ///			<term>Main parts of the external plug-in system</term>
     ///			<description>Relevant for the use of the API and development of your own plugins for a imbACE application</description>
     ///		</listheader>
     ///		<item>

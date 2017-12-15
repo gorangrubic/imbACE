@@ -63,14 +63,7 @@ namespace imbACE.Services.application
 
 
 
-        /// <summary>
-        /// If true it will keep running
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [do keep running]; otherwise, <c>false</c>.
-        /// </value>
-        public Boolean doKeepRunning { get; set; } = true;
-
+      
 
 
         /// <summary>

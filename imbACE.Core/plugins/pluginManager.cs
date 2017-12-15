@@ -44,10 +44,14 @@ using System.Text;
 
 namespace imbACE.Core.plugins
 {
+
+
+
+
     /// <summary>
     /// Loads plugin dlls from the associated directory and creates plugin instances on request
     /// </summary>
-    public sealed class pluginManager
+    public sealed class pluginManager:pluginManagerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="pluginManager"/> class.
@@ -66,36 +70,10 @@ namespace imbACE.Core.plugins
         /// </value>
         public List<String> dllFileNames { get; protected set; } = new List<string>();
 
-        /// <summary>
-        /// Dictionary indexing plugins by relative directory path and type short name: e.g. /myPlugins/reporter.dll -> myPlugins.reporter
-        /// </summary>
-        /// <value>
-        /// 
-        /// </value>
-        public aceConcurrentDictionary<Type> pluginTypesByPathName { get; protected set; } = new aceConcurrentDictionary<Type>();
-
+       
 
         /// <summary>
-        /// Short type name dictionary - for easier resolution/call from the ACE Script
-        /// </summary>
-        /// <value>
-        /// The name of the plugin types by.
-        /// </value>
-        public aceConcurrentDictionary<Type> pluginTypesByName { get; protected set; } = new aceConcurrentDictionary<Type>();
-
-
-        /// <summary>
-        /// Collection of short type names that are banned because of ambiquity
-        /// </summary>
-        /// <value>
-        /// The banned short names.
-        /// </value>
-        public aceDictionarySet<String, Type> bannedShortNames { get; protected set; } = new aceDictionarySet<string, Type>();
-
-
-
-        /// <summary>
-        /// Gets a new instance of plugin, specified by type name of sub directory.name path
+        /// Gets a new instance of plug-in, specified by type name of sub directory.name path
         /// </summary>
         /// <param name="pluginName">Name of the plugin.</param>
         /// <param name="console">The console.</param>
@@ -124,94 +102,12 @@ namespace imbACE.Core.plugins
 
 
 
-        /// <summary>
-        /// Resolves the plugin by name or directory.name path
-        /// </summary>
-        /// <param name="plugin_name">Name of the plugin.</param>
-        /// <param name="output">The output.</param>
-        /// <returns></returns>
-        protected Type resolvePlugin(String plugin_name, ILogBuilder output)
-        {
-            if (!bannedShortNames.ContainsKey(plugin_name))
-            {
-                if (pluginTypesByName.ContainsKey(plugin_name))
-                {
-                    if (output != null)
-                    {
-                        output.log("Plugin class [" + plugin_name + "] class resolved. ");
-                    }
-                    return pluginTypesByName[plugin_name];
-                }
-            }
-
-            if (pluginTypesByPathName.ContainsKey(plugin_name))
-            {
-                if (output != null)
-                {
-                    output.log("Plugin class [" + plugin_name + "] class resolved. ");
-                }
-                return pluginTypesByPathName[plugin_name];
-            } else
-            {
-                if (output != null)
-                {
-                    output.log("Plugin class [" + plugin_name + "] not found.");
-                }
-            }
-            return null;
-        }
-
-
-        /// <summary>
-        /// Registers the plugin.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="sourceDllPath">The source DLL path.</param>
-        /// <param name="output">The output.</param>
-        protected void registerPlugin(Type type, String sourceDllPath, ILogBuilder output)
-        {
-            if (bannedShortNames.ContainsKey(type.Name)) {
-
-                if (pluginTypesByName.ContainsKey(type.Name))
-                {
-                    if (output != null) output.log("Short-name registration of [" + type.Name + "] failed: name already occupied. You'll have to call both by [directory].[typename] path.");
-                    bannedShortNames.Add(type.Name, type);
-
-                    Type pair = null;
-                    if (pluginTypesByName.TryRemove(type.Name, out pair))
-                    {
-                        bannedShortNames.Add(type.Name, pair);
-                    }
-                    
-                } else
-                {
-                    pluginTypesByName.Add(type.Name, type);
-                    if (output != null) output.log("Short-name registration of [" + type.Name + "] done.");
-                }
-            } else
-            {
-                if (output != null) output.log("Short-name registration of [" + type.Name + "] failed, the name is banned from short-name registration for [" + bannedShortNames[type.Name] + "] plugins, so far"); 
-            }
-
-            String dirSufix = sourceDllPath.removeStartsWith(folderWithPlugins.path).Replace("\\", ".");
-            dirSufix = dirSufix.Replace("/", ".");
-            dirSufix = dirSufix.Replace("..", ".");
-
-            String dirNamePath = dirSufix.add(type.Name, ".");
-
-            if (pluginTypesByPathName.ContainsKey(dirNamePath))
-            {
-                if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] failed - can't have multiple plugins with the same name, in the same directory. Move it in sub folder or recompile under another class name");
-            } else
-            {
-                if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] done. ");
-            }
-        }
+       
 
 
 
         /// <summary>
-        /// Loads all available plugins from the <see cref="folderNode"/> specified 
+        /// Loads all external plug-ins from the <see cref="folderNode"/> specified 
         /// </summary>
         /// <param name="output">The log builder to output info to</param>
         /// <param name="altFolder">Alternative folder with plugins to load from, at the end of the process it will set back to the existing one (if there was no existing folder, it will set this as default)</param>
@@ -297,34 +193,7 @@ namespace imbACE.Core.plugins
             
         }
 
-        /// <summary>
-        /// Gets or sets the folder with plugins.
-        /// </summary>
-        /// <value>
-        /// The folder with plugins.
-        /// </value>
-        public folderNode folderWithPlugins { get; set; }
-
-        private String _name = "";
-        /// <summary>
-        /// Name of the manager
-        /// </summary>
-        public String name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        private String _description = "";
-        /// <summary>
-        /// Descriptive purpose of this manager
-        /// </summary>
-        public String description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
-
+      
 
     }
 }

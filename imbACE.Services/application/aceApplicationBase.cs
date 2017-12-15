@@ -94,18 +94,29 @@ namespace imbACE.Services.application
 
         }
 
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        public abstract void doQuit();
+       
 
 
         /// <summary>
-        /// Starts the application.
+        /// Starts the application, keeping thread in the loop. Once it returns <c>false</c>, it means user chosen to quit the application
         /// </summary>
         /// <param name="arguments">The command line arguments.</param>
         /// <returns></returns>
         public Boolean StartApplication(String[] arguments = null)
         {
             startUpProcess(arguments, null);
+            StartUp();
+
+
+            appManager.Application = this;
+
 
             externalLoop();
+
             return false;
         }
 
@@ -135,8 +146,17 @@ namespace imbACE.Services.application
         /// </summary>
         /// <returns></returns>
         protected abstract Boolean doApplicationLoop();
-       
-       
+
+
+        /// <summary>
+        /// If true it will keep running
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [do keep running]; otherwise, <c>false</c>.
+        /// </value>
+        public Boolean doKeepRunning { get; set; } = true;
+
+
 
 
         /// <summary>
@@ -157,8 +177,16 @@ namespace imbACE.Services.application
         }
 
 
+        /// <summary>
+        /// Called on the application start up, once settings are loaded and everything is ready to run
+        /// </summary>
         protected abstract void StartUp();
 
+        /// <summary>
+        /// Boot process, before the <see cref="StartUp"/> method is called
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="_logger">The logger.</param>
         protected void startUpProcess(String[] args, ILogBuilder _logger)
         {
             logger = _logger;
@@ -187,9 +215,18 @@ namespace imbACE.Services.application
 
             aceCommons.crashReportPath = folder_logs.path;
 
-            // loading settings
+
+            imbSCI.Core.screenOutputControl.logToConsoleControl = aceLog.consoleControl;
+
+            // loading settings -----------------------------------------------------------------------\
+
             settings = new aceApplicationSettings();
             settings.Load(folder_config);
+
+            deploySettings();
+
+
+            // ----------------------------------------------------------------------------------------/
 
             // setting up the culture
             Console.OutputEncoding = Encoding.UTF8;
@@ -208,14 +245,36 @@ namespace imbACE.Services.application
            
 
 
-            // loading plugins
+            // loading plug-ins
             plugins = new pluginManager(folder_plugins);
             if (settings.LoadPluginsOnStartUp) plugins.loadPlugins(aceLog.loger, folder_plugins);
+
 
 
             // <------------ calling "loaded" event
             callEventApplicationLoaded();
         }
+
+
+        /// <summary>
+        /// Deploys or redeploys the settings - forcing all parts of the system to update their state according to the settings
+        /// </summary>
+        public void deploySettings()
+        {
+            imbACECoreConfig.settings = settings.aceCoreConfig;
+            imbSCI.Core.config.imbSCICoreConfig.settings = settings.sciCoreConfig;
+            imbSCI.Reporting.config.imbSCIReportingConfig.settings = settings.sciReportingConfing;
+
+            if (settings.aceCoreConfig.doDisplayMainLog)
+            {
+                aceLog.consoleControl.setAsOutput(aceLog.loger.GetMainLogBuilder(), "ace");
+            }
+
+            aceCommons.platform.setWindowSize(settings.ConsoleWindowSize);
+
+
+        }
+
 
         /// <summary>
         /// Handles the ProcessExit event of the CurrentDomain control.

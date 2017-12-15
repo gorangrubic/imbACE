@@ -43,11 +43,13 @@ namespace imbACE.Services.terminal.smartScreen
     using imbACE.Services.textBlocks.input;
     using imbACE.Services.textBlocks.smart;
     using imbSCI.Core.reporting.zone;
+    using System.ComponentModel.DataAnnotations;
+    using imbACE.Core;
 
     //using imbACE.Core.zone;
 
     /// <summary>
-    /// 
+    /// Preset class with Welcome Screen
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class aceTerminalWelcomeScreen<T>:aceTerminalMenuScreenBase<T> where T:aceTerminalApplication
@@ -136,25 +138,17 @@ namespace imbACE.Services.terminal.smartScreen
 
         }
 
-       
+
+
         /// <summary>
-        /// #0 Izvrsava se prvi put - kada se instancira. Customized sekvenca inicijalizacije
+        /// #0 Called when the screen is constructed
         /// </summary>
-        /// <param name="platform"> </param>
+        /// <param name="platform"></param>
         public override void init(IPlatform platform)
         {
             menu = new aceMenu();
             menu.menuTitle = "Welcome menu";
-            menu.setItem(menuItemContinue);
-            menu.setItem(menuItemAbout);
-            menu.setItem(menuItemQuit);
-            menu.selected = menuItemContinue;
-
-
-
-            //menu.setItem("Continue", "", "C", true);
-            //menu.setItem("About", "", "A", false);
-            //menu.setItem("Quit", "", "Q", false);
+            menu.setItems(this);
 
             messageSection = new smartMessageSection(messageTitle, message, platform.height, platform.width, 2, 2);
             messageSection.height = 17;
@@ -185,40 +179,66 @@ namespace imbACE.Services.terminal.smartScreen
             
         }
 
-        protected aceMenuItem menuItemContinue = new aceMenuItem("Continue", "C", "", "", null);
-        protected aceMenuItem menuItemAbout = new aceMenuItem("About", "A", "", "", null);
-        protected aceMenuItem menuItemQuit = new aceMenuItem("Quit", "Q", "", "", null);
+        //protected aceMenuItem menuItemContinue = new aceMenuItem("Continue", "C", "", "", null);
+        //protected aceMenuItem menuItemAbout = new aceMenuItem("About", "A", "", "", null);
+        //protected aceMenuItem menuItemQuit = new aceMenuItem("Quit", "Q", "", "", null);
 
+
+
+        [Display(GroupName = "run", Name = "Continue", ShortName = "C", Description = "Go to the main screen")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It calls the main screen of the application")]
+        /// <summary>Go to the main screen</summary> 
+        /// <remarks><para>It calls the main screen of the application</para></remarks>
+        /// <seealso cref="aceOperationSetExecutorBase"/>
+        public void aceOperation_runContinue()
+        {
+            application.goToMainPage();
+        }
+
+
+        [Display(GroupName = "run", Name = "About", ShortName = "A", Description = "Show About information")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Opens the About dialog")]
+        /// <summary>Show About information</summary> 
+        /// <remarks><para>Opens the About dialog</para></remarks>
+        /// <seealso cref="aceOperationSetExecutorBase"/>
+        public void aceOperation_runAbout()
+        {
+            // your code
+        }
+
+
+        [Display(GroupName = "run", Name = "Quit", ShortName = "ESC", Description = "Quits the application")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It will quit the application")]
+        /// <summary>Quits the application</summary> 
+        /// <remarks><para>It will quit the application</para></remarks>
+        /// <seealso cref="aceOperationSetExecutorBase"/>
+        public void aceOperation_runQuit()
+        {
+            application.doQuit();
+        }
+
+
+        
         /// <summary>
-        /// Obnavlja dinamicki deo sadrzaja
+        /// Refresh call for dynamic part of content or applicative logic
         /// </summary>
         public override void refresh()
         {
-            //throw new NotImplementedException();
+
         }
+
         /// <summary>
-        /// #3 Vrsi rad nakon sto je obradjen ulaz
+        /// Executes the screen-specific logic
         /// </summary>
+        /// <param name="__inputs">The inputs.</param>
+        /// <returns></returns>
         public override inputResultCollection execute(inputResultCollection __inputs)
         {
+            
             var menuResult = __inputs.getBySection(menuSection);
             var selectedItem = menuResult.result as aceMenuItem;
-
-            if (selectedItem == menuItemContinue)
-            {
-                application.goToMainPage();
-            }
-
-            if (selectedItem == menuItemAbout)
-            {
-                
-            }
-
-            if (selectedItem == menuItemQuit)
-            {
-                application.doExit();
-            }
-
+            selectedItem.executeMeta();
+            
             return __inputs;
         }
 

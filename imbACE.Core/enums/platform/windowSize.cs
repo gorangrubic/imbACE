@@ -63,7 +63,8 @@ namespace imbACE.Core.enums.platform
         /// <summary>
         /// The fullscreen size: maximum
         /// </summary>
-        fullscreenSize
+        fullscreenSize,
+        medium
     }
     
 

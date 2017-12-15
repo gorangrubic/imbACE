@@ -150,65 +150,59 @@ namespace imbACE.Core.commands.menu.core
 
             }
 
-            /// <summary>
-            /// Populates menu with provided collection of strings
-            /// </summary>
-            /// <typeparam name="TExecutor">The type of the executor.</typeparam>
-            /// <param name="executor">The executor.</param>
-            /// <param name="component">The component.</param>
-            public void setItems<TExecutor>(TExecutor executor, IAceComponent component = null, BindingFlags binding=BindingFlags.Public|BindingFlags.Instance) where TExecutor : aceOperationSetExecutorBase
-            {
-                executor.GetType();
-
-                var executorType = executor.GetType();
-                MethodInfo[] __methods = executorType.GetMethods(binding);
-                foreach (var __m in __methods)
-                {
-                    if (__m.Name.StartsWith("aceOperation_"))
-                    {
-                        aceMenuItem item = new aceMenuItem();
-                        var args = new aceOperationArgs(executor, this, item, __m, component);
-                        item.itemName = __m.Name.removeStartsWith("aceOperation_");
-                        item.itemName = args.methodInfo.displayName;
-                        item.metaObject = args;
-                        item.index = Count;
-                        item.group = currentItemGroup;
-                        Add(item);
-
-                    }
-                }
-                
-            }
-
         /// <summary>
-        /// Populates menu with provided collection of strings
+        /// Populates menu with provided <c>executor</c>
         /// </summary>
-        
-        /// <param name="executor">The executor.</param>
-        /// <param name="component">The component.</param>
-        public void setItemFromMethods(aceOperationSetExecutorBase executor, IAceComponent component)
+        /// <param name="executor">The executor: Console or Screen that performs operations</param>
+        /// <param name="component">The specific component that is related to the execution of this menu</param>
+        public void setItems(aceOperationSetExecutorBase executor, IAceComponent component = null, BindingFlags binding=BindingFlags.Public|BindingFlags.Instance) 
         {
-            
-            Type executorType = executor.GetType();
-            MethodInfo[] __methods = executorType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            var executorType = executor.GetType();
+            MethodInfo[] __methods = executorType.GetMethods(binding);
             foreach (var __m in __methods)
             {
-                
                 if (__m.Name.StartsWith(aceMenuItemMeta.METHOD_PREFIX))
                 {
                     aceMenuItem item = new aceMenuItem();
                     var args = new aceOperationArgs(executor, this, item, __m, component);
-                    item.itemName = __m.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX);
+                    String displayName = __m.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX);
+
+                    item.itemName = displayName.removeStartsWith(args.methodInfo.categoryName);
 
                     item.metaObject = args;
                     item.index = Count;
-                    item.group = currentItemGroup;
+                    //item.group = ;
                     Add(item);
 
                 }
             }
-
+                
         }
+
+
+        //public void setItemFromMethods(aceOperationSetExecutorBase executor, IAceComponent component=null)
+        //{
+            
+        //    Type executorType = executor.GetType();
+        //    MethodInfo[] __methods = executorType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        //    foreach (var __m in __methods)
+        //    {
+                
+        //        if (__m.Name.StartsWith(aceMenuItemMeta.METHOD_PREFIX))
+        //        {
+        //            aceMenuItem item = new aceMenuItem();
+        //            var args = new aceOperationArgs(executor, this, item, __m, component);
+        //            item.itemName = __m.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX);
+
+        //            item.metaObject = args;
+        //            item.index = Count;
+        //            item.group = currentItemGroup;
+        //            Add(item);
+
+        //        }
+        //    }
+
+        //}
 
 
 

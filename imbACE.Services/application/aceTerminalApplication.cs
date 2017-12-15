@@ -56,88 +56,166 @@ namespace imbACE.Services.application
     using imbACE.Services.textBlocks.input;
     using imbACE.Services.textBlocks.smart;
     using imbSCI.Core.reporting.zone;
+    using System.Collections;
+    using System.Collections.Generic;
+    using imbACE.Core.events;
+
 
     /// <summary>
     /// Text User Interface application base class
     /// </summary>
+    /// <remarks>
+    /// <para>To change currently displayed screen, just set desired screen to the <see cref="current"/> property.</para>
+    /// <para>Go back mechanism is already implemented, however if you want to trigger previous screen back call <see cref="goBack"/> method, do not replace <see cref="current"/> on your own as it will lead to screen loop.</para>
+    /// </remarks>
     /// <seealso cref="imbACE.Services.application.aceTerminalApplicationBase" />
     /// <seealso cref="imbACE.Services.terminal.core.IRenderReadExecute" />
-    public abstract class aceTerminalApplication : aceTerminalApplicationBase, IRenderReadExecute
+    public abstract class aceTerminalApplication : aceTerminalApplicationBase
     {
-
-
-  
+        
         protected aceTerminalApplication():base()
         {
             
         }
 
-        protected override void StartUp()
-        {
-            
-
-            init(platform);
-        }
 
 
-        public textLayout initCommonLayout()
+
+        /// <summary>
+        /// Method called by each screen, on its opening
+        /// </summary>
+        /// <returns></returns>
+        public virtual textLayout initCommonLayout()
         {
             textLayout layout = new textLayout(platform);
 
             layout.addLayer(footerLine, layerBlending.transparent, 10);
-          //  layout.addLayer(statusLine, layerBlending.transparent, 15);
-           // layout.addLayer(headerLine, layerBlending.transparent, 20);
+            //layout.addLayer(statusLine, layerBlending.transparent, 15);
+            //layout.addLayer(headerLine, layerBlending.transparent, 20);
             
             return layout;
         }
 
 
-        public virtual void doExit()
-        {
-            doKeepRunning = false;
-            current = null;
-            Environment.Exit(1);
-            
-        }
+        /// <summary>
+        /// Gets or sets the screen welcome.
+        /// </summary>
+        /// <value>
+        /// The screen welcome.
+        /// </value>
+        public IAceTerminalScreen screenWelcome { get; protected set; }
 
-        public void setTitleContent(String sufix)
-        {
-           
-
-        }
-
-
+        /// <summary>
+        /// Gets or sets the screen main.
+        /// </summary>
+        /// <value>
+        /// The screen main.
+        /// </value>
+        public IAceTerminalScreen screenMain { get; protected set; }
+      
+  
         public smartInfoLineSection headerLine { get; set; }
         public smartInfoLineSection statusLine { get; set; }
         public smartInfoLineSection footerLine { get; set; }
 
+
+        /// <summary>
+        /// Goes to main page.
+        /// </summary>
+        public virtual void goToMainPage()
+        {
+            current = screenMain;
+        }
+
+        /// <summary>
+        /// Goes to welcome page.
+        /// </summary>
+        public virtual void goToWelcomePage()
+        {
+            current = screenWelcome;
+        }
+
+        /// <summary>
+        /// Goes back for one screen-step. If there are any screen in the <see cref="screenHistoryStack"/>
+        /// </summary>
+        public void goBack()
+        {
+            if (isGoBackEnabled)
+            {
+                callEventScreenClosed(_current);
+                
+                _current = screenHistoryStack.Pop();
+
+                callEventScreenOpened(_current);
+            }
+        }
+
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        public override void doQuit()
+        {
+            doKeepRunning = false;
+            current = null;
+        }
+
+
+
+
+
+        /// <summary>Event handler for <see cref="aceEventType.Opened"/>" at <see cref="aceEventOrigin.Screen"/>, to hook reaction method on to. </summary>;
+        public event EventHandler<aceTerminalApplicationEventArgs> onEventScreenOpened;
+        /// <summary>
+        /// The event Opened at Screen caster, with optional pre-created arguments.
+        /// </summary>
+        /// <param name="openedScreen">The opened screen.</param>
+        /// <remarks>
+        /// Invokes <see cref="onEventScreenOpened" />, with <see cref="aceEventType.Opened" /> and <see cref="aceEventOrigin.Screen" />
+        /// </remarks>
+        protected virtual void callEventScreenOpened(IAceTerminalScreen openedScreen)
+        {
+            var e = new aceTerminalApplicationEventArgs();
+            if (e.type == aceEventType.unknown) e.type = aceEventType.Opened;
+            if (e.Origin == aceEventOrigin.unknown) e.Origin = aceEventOrigin.Screen;
+            if (e.RelatedObject == null) e.RelatedObject = openedScreen;
+            e.Message = "";
+            if (onEventScreenOpened != null) onEventScreenOpened(this, e);
+        }
+
+
+        /// <summary>Event handler for <see cref="aceEventType.Closed"/>" at <see cref="aceEventOrigin.Screen"/>, to hook reaction method on to. </summary>;
+        public event EventHandler<aceTerminalApplicationEventArgs> onEventScreenClosed;
+        /// <summary>
+        /// The event Closed at Screen caster, with optional pre-created arguments.
+        /// </summary>
+        /// <param name="closedScreen">The closed screen.</param>
+        /// <remarks>
+        /// Invokes <see cref="onEventScreenClosed" />, with <see cref="aceEventType.Closed" /> and <see cref="aceEventOrigin.Screen" />
+        /// </remarks>
+        protected virtual void callEventScreenClosed(IAceTerminalScreen closedScreen)
+        {
+            var e = new aceTerminalApplicationEventArgs();
+            if (e.type == aceEventType.unknown) e.type = aceEventType.Closed;
+            if (e.Origin == aceEventOrigin.unknown) e.Origin = aceEventOrigin.Screen;
+            if (e.RelatedObject == null) e.RelatedObject = closedScreen;
+            e.Message = "";
+            if (onEventScreenClosed != null) onEventScreenClosed(this, e);
+        }
+
+
         
-        public abstract void goToMainPage();
-
-        public abstract void goToWelcomePage();
-
-        public abstract void goBack();
-       
-
         /// <summary>
-        /// poziva se kada dodje do zatvaranja nekog ekrana
+        /// Record on screen changes, excluding the ones caused by <see cref="goBack"/> method call
         /// </summary>
-        /// <param name="openedScreen"> </param>
-        /// <param name="closedScreen"></param>
-        public abstract void onScreenOpened(IAceTerminalScreen openedScreen);
+        /// <value>
+        /// The screen history stack.
+        /// </value>
+        protected Stack<IAceTerminalScreen> screenHistoryStack { get; set; } = new Stack<IAceTerminalScreen>();
 
 
-        /// <summary>
-        /// poziva se kada dodje do zatvaranja nekog ekrana
-        /// </summary>
-        /// <param name="closedScreen"></param>
-        public abstract void onScreenClosed(IAceTerminalScreen closedScreen);
-
-
-        #region --- current ------- refernca prema trenutnom ekranu
         private IAceTerminalScreen _current;
         /// <summary>
-        /// Reference to the current screen
+        /// The current screen, implements <see cref="screenHistoryStack"/> management and calls <see cref="onScreenClosed(IAceTerminalScreen)"/> and <see cref="onScreenOpened(IAceTerminalScreen)"/> methods
         /// </summary>
         public IAceTerminalScreen current
         {
@@ -149,40 +227,35 @@ namespace imbACE.Services.application
             {
                 if (_current != null)
                 {
-                
-                    lastScreen = _current;
-                    if (lastScreen != null)
+                    
+                    if (screenHistoryStack.Count != 0)
                     {
-                        onScreenClosed(lastScreen);
+                        callEventScreenClosed(screenHistoryStack.Peek());
                     }
+                    
+                    screenHistoryStack.Push(_current);
 
                 }
                 _current = value;
+
                 if (_current != null)
                 {
-                    onScreenOpened(_current);
+                    callEventScreenOpened(_current);
                 }
 
             }
         }
-        #endregion
 
-        public IAceTerminalScreen lastScreen { get; set; }
 
-        
 
         /// <summary>
-        /// Da li je omoguceno GoBack dugme
+        /// If <c>true</c>, currently it is enabled to perform <see cref="goBack"/> 
         /// </summary>
-        public Boolean idGoBackEnabled
+        public Boolean isGoBackEnabled
         {
             get
             {
-                Boolean output = true;
-                if (lastScreen == null) return false;
-                if (lastScreen == current) return false;
-                
-                return output;
+                return (screenHistoryStack.Count != 0);
             }
         }
 
@@ -222,36 +295,36 @@ namespace imbACE.Services.application
             return doKeepRunning;
         }
 
-
-
-        #region --- platform ------- platforma za konzolu
-        private IPlatform _platform;
+               
+        
         /// <summary>
-        /// platforma za konzolu
+        /// Reference to the currently active output platform
         /// </summary>
         public IPlatform platform
         {
             get { return aceCommons.platform; }
             
         }
-        #endregion
 
         /// <summary>
-        /// #0 Izvrsava se prvi put - kada se instancira. Customized sekvenca inicijalizacije
+        /// Called on the application start up, once settings are loaded and everything is ready to run
         /// </summary>
-        /// <param name="platform1"> </param>
-        public void init(IPlatform platform1)
+        protected override void StartUp()
         {
             headerLineLeftContent = appAboutInfo.applicationName + " " + appAboutInfo.applicationVersion;
 
             footerLine = new smartInfoLineSection(25, platform, 0, 2);
             footerLine.setStyle(textSectionLineStyleName.heading);
+            
+            current = screenWelcome;
         }
 
         /// <summary>
-        /// #1 Generise sadrzaj
+        /// #1 Renders the content
         /// </summary>
-        public void render(IPlatform platform, Boolean doClearScreen=true)
+        /// <param name="platform">The platform on which the rendering should be performed</param>
+        /// <param name="doClearScreen">if set to <c>true</c> it will clear screen.</param>
+        protected virtual void render(IPlatform platform, Boolean doClearScreen=true)
         {
             doUpdateInterface();
 
@@ -259,10 +332,10 @@ namespace imbACE.Services.application
         }
 
         /// <summary>
-        /// #2 Očitava ulaz
+        /// #2 Reads the input
         /// </summary>
         /// <param name="__results">todo: describe __results parameter on read</param>
-        public inputResultCollection read(inputResultCollection __results)
+        protected virtual inputResultCollection read(inputResultCollection __results)
         {
             if (__results == null) __results = new inputResultCollection();
             
@@ -272,10 +345,10 @@ namespace imbACE.Services.application
         }
 
         /// <summary>
-        /// #3 Vrsi rad nakon sto je obradjen ulaz
+        /// #3 Forwards the input result to the <see cref="current"/> screen
         /// </summary>
         /// <param name="__inputs">todo: describe __inputs parameter on execute</param>
-        public inputResultCollection execute(inputResultCollection __inputs)
+        protected virtual inputResultCollection execute(inputResultCollection __inputs)
         {
             __inputs.platform = platform;
 

@@ -62,6 +62,11 @@ using imbSCI.Reporting.interfaces;
     using imbSCI.Core.reporting;
 
 
+    /// <summary>
+    /// Simple imbACE Command Console application
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="imbACE.Services.application.aceApplicationBase" />
     public abstract class aceConsoleApplication<T>:aceApplicationBase where T:IAceCommandConsole, new()
     {
         private IAceCommandConsole _mainConsole = null;
@@ -89,12 +94,22 @@ using imbSCI.Reporting.interfaces;
             
         }
 
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        public override void doQuit()
+        {
+            doKeepRunning = false;
+
+            
+        }
+
 
         protected override bool doApplicationLoop()
         {
             mainConsole.start(this);
 
-            return false;
+            return doKeepRunning;
         }
     }
 

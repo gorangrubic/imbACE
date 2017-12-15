@@ -35,6 +35,7 @@ using System.Text;
 
 namespace imbACE.Services.platform
 {
+    using imbACE.Core;
     using imbACE.Core.enums.platform;
     using imbACE.Core.operations;
     using imbACE.Services.platform.core;
@@ -146,26 +147,48 @@ namespace imbACE.Services.platform
         }
 
         /// <summary>
-        /// Sets the size of the window.
+        /// Sets the size of the console application window.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <param name="doAutoDeploySize">if set to <c>true</c> [do automatic deploy size].</param>
         public void setWindowSize(windowSize size, Boolean doAutoDeploySize = true)
         {
+            Int32 w = 0;
+            Int32 h = 0;
             
             switch (size)
             {
                 case windowSize.fullscreenSize:
-                    Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+                    
+                    //Console.SetWindowPosition(0, 0);
+                    w = Console.LargestWindowWidth;
+                    h = Console.LargestWindowHeight;
+
                    // Console.SetWindowPosition(1, 1);
                     break;
+                case windowSize.medium:
+                    //Console.SetWindowSize(135, 80);
+                    w = 135;
+                    h = 60;
+                    break;
                 case windowSize.doubleSize:
-                    Console.SetWindowSize(170, 86);
+                    //Console.SetWindowSize(170, 84);
+                    w = 170;
+                    h = 80;
                     break;
                 case windowSize.defaultSize:
-                    Console.SetWindowSize(85, 43);
+                    w = 85;
+                    h = 43;
+                    //Console.SetWindowSize(85, 43);
                     break;
             }
+
+            if (w > Console.LargestWindowWidth) w = Console.LargestWindowWidth;
+            if (h > Console.LargestWindowHeight) h = Console.LargestWindowHeight;
+
+            Console.SetWindowSize(w, h);
+            Console.SetWindowPosition(0, 0);
+
             if (doAutoDeploySize)
             {
                 deploySize();
@@ -182,7 +205,14 @@ namespace imbACE.Services.platform
         {
             moveCursor(x, y);
             
-            Console.Write(content);
+            if (imbACECoreConfig.settings.doConsoleColorsByMarkupParshing)
+            {
+                consolePlatformExtensions.consoleWriteLine(content, false);
+            } else
+            {
+                Console.Write(content);
+            }
+            
         }
 
         /// <summary>

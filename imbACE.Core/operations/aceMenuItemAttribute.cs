@@ -47,6 +47,10 @@ namespace imbACE.Core.operations
 {
     using System;
 
+    /// <summary>
+    /// Operation Annotation attribute used to define how: Command Console, Screen, Console Plugin etc. operation methods are presented in auto-generated user manual, menu TUI, command line args help and ACE Script help
+    /// </summary>
+    /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Class |
                     AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Property |
                     AttributeTargets.Enum | AttributeTargets.GenericParameter | AttributeTargets.All,

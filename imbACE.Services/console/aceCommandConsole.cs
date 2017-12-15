@@ -77,7 +77,38 @@ namespace imbACE.Services.console
     /// <seealso cref="aceOperationSetExecutorBase" />
     public abstract class aceCommandConsole : aceOperationSetExecutorBase, IAceOperationSetExecutor, IAceCommandConsole
     {
-                
+
+        public Boolean doAskForQuitConfirmation { get; set; } = false;
+
+        /// <summary>
+        /// Should user be prompted on <see cref="aceOperation_consoleExit()"/> to confirm?
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [do ask for exit configmation]; otherwise, <c>false</c>.
+        /// </value>
+        public Boolean doAskForExitConfigmation { get; set; } = false;
+
+        #region ------------------- BASIC CONSOLE OPERATIONS --------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+        [Display(GroupName = "console", Name = "ClearScreen", ShortName = "", Description = "Clear screen - flushing console output buffer")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Clears the current screen")]
+        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "Cls")]
+        /// <summary>Clear screen - flushing console output buffer</summary> 
+        /// <remarks><para>Clears the current screen</para></remarks>
+        public void aceOperation_consoleCls()
+        {
+            cls();
+        }
+
+
+
+
+
+
+
         [Display(GroupName = "run", Name = "Pause", ShortName = "", Description = "It pause ACE script execution, optionally displays custom message and allows user to end the pause")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "If wait set to -1 there will be no time limit, the user will have to stop it. It will beep in last 1/5 of wait period.")]
         /// <summary>It pause ACE script execution, optionally displays custom message and allows user to end the pause</summary> 
@@ -112,57 +143,24 @@ namespace imbACE.Services.console
             }
         }
 
-
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "none")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "none")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "None")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Pseudo command - does nothing")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Doomy instruction")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runNone.md")]
-
-        /// <summary>
-        /// Method of menu option None (key:none). <args> expects param: word:String;steps:Int32;debug:Boolean;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters:  word:String;steps:Int32;debug:Boolean;</param>
-        /// <remarks>
-        /// <para>Doomy instruction</para>
-        /// <para>Pseudo command - does nothing</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+        
+        [Display(GroupName = "run", Name = "None", ShortName = "none", Description = "Pseudo instruction - does nothing actually")]
+        /// <summary>Pseudo instruction - does nothing actually</summary> 
         /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runNone(aceOperationArgs args)
+        public void aceOperation_runNone()
         {
-
         }
 
 
 
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "h")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "help")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "Help")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "console")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "List of all supported commands, with default parameters.")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Displays the command list and creates help file with the same content on the project folder")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_consoleHelp.md")]
-        // [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "param:type;paramb:type;")]
-        /// <summary>
-        /// Method of menu option Help (key:h). <args> expects param: param:type;paramb:type;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters: param:type;paramb:type;</param>
-        /// <remarks>
-        /// <para>Displays the command list and creates help file with the same content on the project folder</para>
-        /// <para>List of all supported commands, with default parameters</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+        [Display(GroupName = "console", Name = "Help", ShortName = "h", Description = "Provides Type-specific help content for the console, lists of all supported commands, plugins, local variables...")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "If help option is not specified, it will ask user for type of help should be displayed")]
+         /// <summary>Provides Type-specific help content for the console, lists of all supported commands, plugins, local variables...</summary> 
+        /// <remarks><para>If help option is not specified, it will ask user for type of help should be displayed</para></remarks>
+        /// <param name="option">Type of help content to show, if not specified it prompts the user</param>
         /// <seealso cref="aceOperationSetExecutorBase"/>
         public void aceOperation_consoleHelp(
-            [Description("Help option: all, properties, plugins, modules, commands")]
-            aceCommandConsoleHelpOptions option=aceCommandConsoleHelpOptions.none
+            [Description("Type of help content to show, if not specified it prompts the user")] aceCommandConsoleHelpOptions option = aceCommandConsoleHelpOptions.none
             )
         {
 
@@ -170,74 +168,69 @@ namespace imbACE.Services.console
             {
                 option = aceTerminalInput.askForEnum<aceCommandConsoleHelpOptions>("Select Help option:", aceCommandConsoleHelpOptions.full);
             }
-            commandSetTree.ReportCommandTree(output, false, 0,option);
+            commandSetTree.ReportCommandTree(output, false, 0, option);
             helpContent = output.getLastLine();
-
         }
 
 
 
 
 
-
-
-
-        [aceMenuItem(Core.operations.aceMenuItemAttributeRole.Key, "Quit")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "Quit")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "QuitApplication")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "run")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Closing application")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Closing the complete application")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_runQuitApplication.md")]
-
-        /// <summary>
-        /// Method of menu option QuitApplication (key:Quit). <args> expects param: word:String;steps:Int32;debug:Boolean;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters:  word:String;steps:Int32;debug:Boolean;</param>
-        /// <remarks>
-        /// <para>Closing the complete application</para>
-        /// <para>Closing application</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
+        [Display(GroupName = "console", Name = "Quit", ShortName = "q", Description = "Quiting the aceApplication this console is running in")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "It will prompt the user to confirm, if specified by console configuration")]
+        /// <summary>Quiting the aceApplication this console is running in</summary> 
+        /// <remarks><para>It will prompt the user to confirm, if specified by console configuration</para></remarks>
         /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_runQuitApplication(aceOperationArgs args)
+        public void aceOperation_consoleQuit()
         {
-            Environment.Exit(0);
+            Boolean doExit = true;
+            if (doAskForQuitConfirmation)
+            {
+                doExit = aceTerminalInput.askYesNo("Are you sure to quit the [" + application.name + "] application?");
+            }
+            if (doExit) Environment.Exit(0);
         }
 
 
-        [aceMenuItem(aceMenuItemAttributeRole.Key, "exit")]
-        [aceMenuItem(aceMenuItemAttributeRole.aliasNames, "close")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisplayName, "Exit")]
-        [aceMenuItem(aceMenuItemAttributeRole.Category, "console")]
-        [aceMenuItem(aceMenuItemAttributeRole.Description, "Ending console session")]
-        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Returns to parent screen")]
-        [aceMenuItem(aceMenuItemAttributeRole.DisabledRemarks, "(disabled)")]
-        // [aceMenuItem(aceMenuItemAttributeRole.ConfirmMessage, "Are you sure?")]  // [aceMenuItem(aceMenuItemAttributeRole.EnabledRemarks, "")]
-        // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_consoleExit.md")]
 
-        /// <summary>
-        /// Method of menu option Exit (key:exit). <args> expects param: param:type;paramb:type;
-        /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters: param:type;paramb:type;</param>
-        /// <remarks>
-        /// <para>Returns to parent screen</para>
-        /// <para>Ending console session</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
-        public void aceOperation_consoleExit(aceOperationArgs args)
+        [Display(GroupName = "console", Name = "Exit", ShortName = "x", Description = "Exits the current console run-loop")]
+        [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "If this is the main console of the application - it actually does nothing")]
+        /// <summary>Exits the current console run-loop</summary> 
+        /// <remarks><para>If this is the main console of the application - it actually does nothing</para></remarks>
+        public void aceOperation_consoleExit()
         {
             consoleIsRunning = false;
         }
 
 
+        #endregion ------------------- BASIC CONSOLE OPERATIONS ----------------------------------------------------------------------------------------------------------------------
 
-        public IAceApplicationBase application { get; protected set; }
 
 
+        private List<String> _helpHeader = new List<String>();
+        /// <summary> Additional points for console help header text. <see cref="helpContent"/></summary>
+        public List<String> helpHeader
+        {
+            get
+            {
+                return _helpHeader;
+            }
+            protected set
+            {
+                _helpHeader = value;
+                OnPropertyChanged("helpHeader");
+            }
+        }
+
+        private String _helpContent = "";
+        /// <summary>
+        /// Help text short header, used when console api is rendered or shown
+        /// </summary>
+        public String helpContent
+        {
+            get { return _helpContent; }
+            set { _helpContent = value; }
+        }
 
         protected String _consoleTitle = "Command Console";
         /// <summary> Console title </summary>
@@ -261,58 +254,39 @@ namespace imbACE.Services.console
         }
 
 
-        private IPlatform _platform;
+        /// <summary>
+        /// Reference to <see cref="aceApplicationBase"/>
+        /// </summary>
+        /// <value>
+        /// The application.
+        /// </value>
+        public IAceApplicationBase application { get; protected set; }
+
+
         /// <summary> Reference to the application's platform to display/use the console outputs </summary>
-        public IPlatform platform
-        {
-            get
-            {
-                return _platform;
-            }
-            protected set
-            {
-                _platform = value;
-                OnPropertyChanged("platform");
-            }
-        }
+        public IPlatform platform { get; protected set; }
 
 
         private builderForLog _output;
         /// <summary>
         /// The primary console output. By default pointed to the <see cref="platform"/> via <see cref="aceLog.consoleControl"/>
         /// </summary>
-        public virtual builderForLog output
-        {
-            get { return _output; }
-            set { _output = value; }
-        }
+        public virtual builderForLog output { get; set; }
 
 
         ILogBuilder IAceOperationSetExecutor.output => output;
 
 
-        private builderForLog _response;
         /// <summary>
         /// Secondary output of the console. By default it is pointed to the <see cref="platform"/> output, but it can be directed to a file or other outputs.
         /// </summary>
-        public builderForLog response
-        {
-            get { return _response; }
-            set { _response = value; }
-        }
+        public builderForLog response { get; set; }
 
 
-        private aceMenu _commands;
         /// <summary>
-        /// osnovni menu
+        /// Commands of the console
         /// </summary>
-        public aceMenu commands
-        {
-            get
-            {
-                return _commands;
-            }
-        }
+        public aceMenu commands { get; protected set; }
 
         protected aceCommandConsole(String __title = "", IAceComponent component = null, String __helpLine = "")
         {
@@ -323,33 +297,17 @@ namespace imbACE.Services.console
 
         protected virtual void init(IAceComponent component)
         {
-            _commands = new aceMenu();
+            commands = new aceMenu();
             commands.setItems(this, component);
             
-
-
             Type consoleType = this.GetType();
             output = new builderForLog(consoleType.Name + "_output", false);
             response = new builderForLog(consoleType.Name + "_response", false);
-            
+            consoleIsRunning = true;
 
         }
 
 
-        private List<String> _helpHeader = new List<String>();
-        /// <summary> Aditional points for console help header text. <see cref="helpContent"/></summary>
-        public List<String> helpHeader
-        {
-            get
-            {
-                return _helpHeader;
-            }
-            protected set
-            {
-                _helpHeader = value;
-                OnPropertyChanged("helpHeader");
-            }
-        }
 
         public abstract aceCommandConsoleIOEncode encode { get;}
 
@@ -442,15 +400,7 @@ namespace imbACE.Services.console
         }
 
 
-        private String _helpContent = "";
-        /// <summary>
-        /// Help text short header, used when console api is rendered or shown
-        /// </summary>
-        public String helpContent
-        {
-            get { return _helpContent; }
-            set { _helpContent = value; }
-        }
+
 
 
         private aceConsoleScript _scriptRunning ;
@@ -476,8 +426,6 @@ namespace imbACE.Services.console
         /// <param name="delay">The delay between two instructions in the script, in miliseconds</param>
         public aceConsoleScript executeScript(IAceConsoleScript script, Int32 delay=10)
         {
-
-
             aceConsoleScript parent = scriptRunning as aceConsoleScript;
             scriptRunning = script as aceConsoleScript;
 
@@ -612,7 +560,7 @@ namespace imbACE.Services.console
 
         private String _linePrefix = ">";
         /// <summary>
-        /// 
+        /// Prefix to show in the command line
         /// </summary>
         public virtual String linePrefix
         {
@@ -626,7 +574,7 @@ namespace imbACE.Services.console
         private commandTree _commandSetTree;
 
         /// <summary>
-        /// 
+        /// Last input from the command line
         /// </summary>
         public String lastInput
         {
@@ -641,6 +589,7 @@ namespace imbACE.Services.console
         IAceConsoleScript IAceCommandConsole.scriptRunning => throw new NotImplementedException();
 
         protected abstract void doCustomSpecialCall(aceCommandActiveInput input);
+        
 
         protected void doSpecialCall(aceCommandActiveInput input)
         {
@@ -684,11 +633,11 @@ namespace imbACE.Services.console
 
             cls();
 
-            helpHeader.Add("To use with default parameters enter just [command name]");
-            helpHeader.Add("To see help for particular command enter: [command name] " + aceCommandEntry.PARAM_HELP);
-            helpHeader.Add("To specify parameters one by one enter: [command name] " + aceCommandEntry.PARAM_WILLCARD);
-            helpHeader.Add("[F1] full help | [F2] properties help | [F3] console plugins list | [F5] buffer to file");
-            helpHeader.Add("[DOWN] history back | [UP] history forward | [TAB] confirm proposal | [F12] clear screen"); 
+            helpHeader.Add("Command with default parameters: [command name]");
+            helpHeader.Add("For help on a command: [command name] " + aceCommandEntry.PARAM_HELP);
+            helpHeader.Add("To be prompted for parameters: [command name] " + aceCommandEntry.PARAM_WILLCARD);
+           // helpHeader.Add("[F1] full help | [F2] properties help | [F3] console plugins list | [F5] buffer to file");
+           // helpHeader.Add("[DOWN] history back | [UP] history forward | [TAB] confirm proposal | [F12] clear screen"); 
 
 
             aceLog.consoleControl.setAsOutput(output);

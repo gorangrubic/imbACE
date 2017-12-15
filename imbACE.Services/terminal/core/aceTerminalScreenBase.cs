@@ -52,33 +52,11 @@ namespace imbACE.Services.terminal.core
         }
 
 
-
-        #region --- parentScreen ------- ekran na koji se vraca kada korisnik pritisne back - automatski podesava ovu vrednost
-        private IAceTerminalScreen _parentScreen = null;
-        /// <summary>
-        /// ekran na koji se vraca kada korisnik pritisne back - automatski podesava ovu vrednost
-        /// </summary>
-        public IAceTerminalScreen parentScreen
-        {
-            get
-            {
-                return _parentScreen;
-            }
-            set
-            {
-                _parentScreen = value;
-                OnPropertyChanged("parentScreen");
-            }
-        }
-        #endregion
-        
-
-
-        #region --- title ------- naslov ekrana
-
         private String _title = "";
+
+
         /// <summary>
-        /// naslov ekrana
+        /// Screen title
         /// </summary>
         public String title
         {
@@ -91,14 +69,12 @@ namespace imbACE.Services.terminal.core
                 _title = value;
             }
         }
-        #endregion
 
-
-
-        #region --- layout ------- Layout terminalnog ekrana
+        
         private textLayout _layout;
+
         /// <summary>
-        /// Layout terminalnog ekrana
+        /// Screen layout
         /// </summary>
         public textLayout layout
         {
@@ -112,10 +88,9 @@ namespace imbACE.Services.terminal.core
                 OnPropertyChanged("layout");
             }
         }
-        #endregion
-
+        
         /// <summary>
-        /// #0 Izvrsava se prvi put - kada se instancira. Customized sekvenca inicijalizacije
+        /// #0 Called when the screen is constructed
         /// </summary>
         /// <param name="platform"> </param>
         public abstract void init(IPlatform platform);
@@ -124,48 +99,51 @@ namespace imbACE.Services.terminal.core
         
 
         /// <summary>
-        /// Obnavlja dinamicki deo sadrzaja
+        /// Refresh call for dynamic part of content or applicative logic
         /// </summary>
         public abstract void refresh();
 
 
-        /// <summary>
-        /// #2 Očitava ulaz -- reseno na nivou aceTErminalScreenBase
-        /// </summary>
-        public abstract inputResultCollection read(inputResultCollection __results); 
-        
 
         /// <summary>
-        /// #3 Vrsi rad nakon sto je obradjen ulaz
+        /// Reads the user input
         /// </summary>
+        /// <param name="__results">The results.</param>
+        /// <returns></returns>
+        public abstract inputResultCollection read(inputResultCollection __results);
+
+
+        /// <summary>
+        /// Executes the screen-specific logic
+        /// </summary>
+        /// <param name="__inputs">The inputs.</param>
+        /// <returns></returns>
         public abstract inputResultCollection execute(inputResultCollection __inputs);
 
-        /// <summary>
-        /// #1 Generise sadrzaj
-        /// </summary>
-        public abstract void render(IPlatform platform, Boolean doClearScreen=true);
 
         /// <summary>
-        /// porukaZaFooter
+        /// #1 Renders the content
         /// </summary>
+        /// <param name="platform">The platform on which the rendering should be performed</param>
+        /// <param name="doClearScreen">if set to <c>true</c> it will clear screen.</param>
+        public abstract void render(IPlatform platform, Boolean doClearScreen=true);
+
+
+
         public string layoutFooterMessage
         {
             get { return layout.layoutFooterMessage; }
             set { layout.layoutFooterMessage = value; }
         }
 
-        /// <summary>
-        /// poruka za naslov prozora
-        /// </summary>
+        
         public string layoutTitleMessage
         {
             get { return layout.layoutTitleMessage; }
             set { layout.layoutTitleMessage = value; }
         }
 
-        /// <summary>
-        /// Poruka za statusni header
-        /// </summary>
+
         public string layoutStatusMessage
         {
             get { return layout.layoutStatusMessage; }

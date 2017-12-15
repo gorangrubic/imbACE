@@ -45,7 +45,7 @@ namespace imbACE.Services.terminal.core
 
 
     /// <summary>
-    /// application terminal screen base class
+    /// Base class for an Terminal Application screen
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class aceTerminalScreenBase<T> : aceTerminalScreenBase where T:aceTerminalApplication

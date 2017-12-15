@@ -32,16 +32,37 @@ namespace imbACE.ApplicationDemo.consoleApp
 {
     using imbACE.Services.console;
 
+    /// <summary>
+    /// Workspave for the console
+    /// </summary>
+    /// <seealso cref="imbACE.Services.console.aceAdvancedConsoleWorkspace" />
     public class CommandConsoleDemoWorkspace : aceAdvancedConsoleWorkspace
     {
+
+        /// <summary>
+        /// Initializes the workspace for the console specified
+        /// </summary>
+        /// <param name="console">The console using this workspace</param>
         public CommandConsoleDemoWorkspace(CommandConsoleDemo console) :base(console)
         {
 
         }
 
+
+        /// <summary>
+        /// Gets called during workspace construction, the method should initiate any additional subdirectories that console's project uses
+        /// </summary>
+        /// <remarks>
+        /// <example>
+        /// Place inside initiation of additional directories, required for your console's project class (inheriting: <see cref="T:imbACE.Services.console.aceAdvancedConsoleStateBase" />)
+        /// <code><![CDATA[
+        /// folderName = folder.Add(nameof(folderName), "Caption", "Description");
+        /// ]]></code></example>
+        /// </remarks>
         public override void setAdditionalWorkspaceFolders()
         {
-            //
+            // place here your additional directories for console's project subdirectory as follows:
+            // folderName = folder.Add(nameof(folderName), "Caption", "Description");
         }
     }
 

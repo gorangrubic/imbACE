@@ -31,6 +31,10 @@ namespace imbACE.ApplicationDemo.consoleApp
 {
     using imbACE.Services.console;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="imbACE.Services.console.aceAdvancedConsole{imbACE.ApplicationDemo.consoleApp.CommandConsoleDemoState, imbACE.ApplicationDemo.consoleApp.CommandConsoleDemoWorkspace}" />
     public class CommandConsoleDemo : aceAdvancedConsole<CommandConsoleDemoState, CommandConsoleDemoWorkspace>
     {
         public override string consoleTitle { get { return "Demo Console"; } }
@@ -43,6 +47,12 @@ namespace imbACE.ApplicationDemo.consoleApp
 
         public override aceCommandConsoleIOEncode encode => aceCommandConsoleIOEncode.dos;
 
+        /// <summary>
+        /// Gets the workspace.
+        /// </summary>
+        /// <value>
+        /// The workspace.
+        /// </value>
         public override CommandConsoleDemoWorkspace workspace {
             get
             {
@@ -54,14 +64,19 @@ namespace imbACE.ApplicationDemo.consoleApp
             }
         }
 
+        /// <summary>
+        /// Customized code to be executed once the console is started
+        /// </summary>
         public override void onStartUp()
         {
-            //
+            base.onStartUp();
+
+            // put here your code 
         }
 
         protected override void doCustomSpecialCall(aceCommandActiveInput input)
         {
-            //
+            
         }
     }
 

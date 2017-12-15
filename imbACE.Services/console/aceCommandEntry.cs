@@ -199,16 +199,6 @@ namespace imbACE.Services.console
 
             Object[] array = carg.getInvokeArray();
 
-            //Int32 par_c = marg.method.GetParameters().Count();
-            //Int32 arr_c = array.Count();
-
-            //if (par_c > arr_c)
-            //{
-            //    aceLog.log("Command [" + marg.method.Name + "] requires [" + par_c + "] parameters! Provided [" + arr_c + "]");
-            //}
-
-
-
             if (marg.method != null)
             {
                 try

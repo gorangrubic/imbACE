@@ -42,7 +42,13 @@ namespace imbACE.Core.plugins.core
     /// <seealso cref="imbSCI.Data.interfaces.IObjectWithName" />
     public interface IAcePluginBase :IObjectWithName
     {
-        
+        /// <summary>
+        /// Name of this plugin instance
+        /// </summary>
+        /// <value>
+        /// The name of the instance.
+        /// </value>
+        String instanceName { get; set; }
     }
 
 }

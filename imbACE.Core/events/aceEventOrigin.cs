@@ -83,6 +83,11 @@ namespace imbACE.Core.events
         Console,
 
         /// <summary>
+        /// The screen: TUI screen
+        /// </summary>
+        Screen,
+
+        /// <summary>
         /// The plugin: a plugin had event
         /// </summary>
         Plugin,

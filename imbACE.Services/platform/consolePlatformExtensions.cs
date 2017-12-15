@@ -50,7 +50,7 @@ namespace imbACE.Services.platform
         //private static regexMarkerCollection<consoleStyleMarkerEnum> _consoleStyleMarkers;/
         //public static regexMarkerCollection<consoleStyleMarkerEnum> consoleStyleMarkers
 
-        public static void consoleWriteLine(String line)
+        public static void consoleWriteLine(String line, Boolean breakLine = true)
         {
 
             regexMarkerResultCollection<consoleStyleMarkerEnum> result = consolePlatformExtensions.consoleStyleMarkers.process(line);
@@ -73,12 +73,17 @@ namespace imbACE.Services.platform
                 }
                 Console.Write(res.content);
             }
-            Console.WriteLine();
+            if (breakLine) Console.WriteLine();
 
             Console.ForegroundColor = lastColor;
             Console.BackgroundColor = lastBg;
 
         }
+
+
+
+        private static Object consoleStyleMarkersLock = new Object();
+
 
         private static regexMarkerCollectionForConsole _consoleStyleMarkers;
         public static regexMarkerCollectionForConsole consoleStyleMarkers
@@ -87,11 +92,18 @@ namespace imbACE.Services.platform
             {
                 if (_consoleStyleMarkers == null)
                 {
-                    _consoleStyleMarkers = new regexMarkerCollectionForConsole();
-                    
-                    _consoleStyleMarkers.Add(new regexMarkerForConsole(@"_([\w\s\.\-\:\,\%\?\!\:\=\$]*)_", consoleStyleMarkerEnum.highlight, ConsoleColor.Cyan, ConsoleColor.DarkGray));
-                    _consoleStyleMarkers.Add(new regexMarkerForConsole(@"`([\w\s\.\-\:\,\%\?\!\:\=\$]*)`", consoleStyleMarkerEnum.darker, ConsoleColor.Gray, ConsoleColor.DarkGray));
-                    _consoleStyleMarkers.Add(new regexMarkerForConsole(@"\*([\w\s\.\-\:\,\%\?\!\:\=\$]*)\*", consoleStyleMarkerEnum.bolder, ConsoleColor.DarkGray, ConsoleColor.White));
+                    lock (consoleStyleMarkersLock)
+                    {
+                        if (_consoleStyleMarkers == null)
+                        {
+                            _consoleStyleMarkers = new regexMarkerCollectionForConsole();
+
+                            _consoleStyleMarkers.Add(new regexMarkerForConsole(@"\*\*([\w\s\.\-\:\,\%\?\!\:\=\$]*)\*\*", consoleStyleMarkerEnum.doubleBolder, ConsoleColor.Red, ConsoleColor.Black));
+                            _consoleStyleMarkers.Add(new regexMarkerForConsole(@"_([\w\s\.\-\:\,\%\?\!\:\=\$]*)_", consoleStyleMarkerEnum.highlight, ConsoleColor.Cyan, ConsoleColor.DarkGray));
+                            _consoleStyleMarkers.Add(new regexMarkerForConsole(@"`([\w\s\.\-\:\,\%\?\!\:\=\$]*)`", consoleStyleMarkerEnum.darker, ConsoleColor.Gray, ConsoleColor.DarkGray));
+                            _consoleStyleMarkers.Add(new regexMarkerForConsole(@"\*([\w\s\.\-\:\,\%\?\!\:\=\$]*)\*", consoleStyleMarkerEnum.bolder, ConsoleColor.DarkGray, ConsoleColor.White));
+                        }
+                    }
                 }
                 return _consoleStyleMarkers;
             }

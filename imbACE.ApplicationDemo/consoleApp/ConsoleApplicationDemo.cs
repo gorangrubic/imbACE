@@ -34,16 +34,16 @@ namespace imbACE.ApplicationDemo.consoleApp
 
     public class ConsoleApplicationDemo : aceConsoleApplication<CommandConsoleDemo>
     {
-        public static ConsoleApplicationDemo application;
         
-
         public static void Main(string[] args)
         {
-            application = new ConsoleApplicationDemo();
+            var application = new ConsoleApplicationDemo();
+
             application.StartApplication(args);
+
+            // here you may place code that has to be performed after user called application closing
+            // ...
         }
-
-
 
         public override void setAboutInformation()
         {

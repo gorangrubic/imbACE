@@ -43,11 +43,10 @@ namespace imbACE.Services.terminal.screen
     public abstract class aceTerminalMenuScreenBase<T> : aceTerminalScreenBase<T> where T:aceTerminalApplication
     {
         
-        #region --- menu ------- osnovni menu
-
+        
         private aceMenu _menu;
         /// <summary>
-        /// osnovni menu
+        /// Data structure describing the menu
         /// </summary>
         protected aceMenu menu
         {
@@ -61,17 +60,12 @@ namespace imbACE.Services.terminal.screen
                 OnPropertyChanged("menu");
             }
         }
-        #endregion
+        
 
-
-
-       
-
-
-        #region --- menuSection ------- sekcija kojom prikazuje menu
+        
         private smartMenuSection _menuSection;
         /// <summary>
-        /// sekcija kojom prikazuje menu
+        /// Section displaying the menu 
         /// </summary>
         public smartMenuSection menuSection
         {
@@ -85,12 +79,9 @@ namespace imbACE.Services.terminal.screen
                 OnPropertyChanged("menuSection");
             }
         }
-        #endregion
+        
 
 
-        /// <summary>
-        /// #2 Očitava ulaz
-        /// </summary>
         public override inputResultCollection read(inputResultCollection __results)
         {
             if (__results == null) __results = new inputResultCollection();
@@ -109,11 +100,11 @@ namespace imbACE.Services.terminal.screen
             return __results;
         }
 
-       /// <summary>
-       /// instancira menu objekat
-       /// </summary>
-       /// <param name="terminalApplication"></param>
-       /// <param name="__title"></param>
+        /// <summary>
+        /// Screen with menu
+        /// </summary>
+        /// <param name="terminalApplication"></param>
+        /// <param name="__title"></param>
         protected aceTerminalMenuScreenBase(T terminalApplication, string __title):base(terminalApplication, __title)
         {
            

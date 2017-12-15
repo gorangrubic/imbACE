@@ -765,7 +765,7 @@ namespace imbACE.Services.terminal
                     return !defAns;
                 } else
                 {
-                    Console.WriteLine(" -- cancelled by pressing [" + cki.Key.ToString() + "] -- ");
+                    Console.WriteLine(" -- canceled by pressing [" + cki.Key.ToString() + "] -- ");
                     return defAns;
                 }
 

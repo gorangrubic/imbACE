@@ -86,34 +86,6 @@ namespace imbACE.Core.core
         }
 
 
-
-        /// <summary>
-        /// Global autosave enabled
-        /// </summary>
-        public static Boolean autosaveEnabled = false;
-
-
-        public static Boolean autoFlushLogPage = true;
-
-        /// <summary>
-        /// The automatic flush log content if the limit is reached. Flushed contet saves under unique page filename
-        /// </summary>
-        public static Int32 autoFlushLogPageKByteLimit = 1024;
-
-
-
-        /// <summary>
-        /// If true it will control overfreq autosave
-        /// </summary>
-        public static Boolean autosaveTimeSpanOn = true;
-
-
-        /// <summary>
-        /// Time required to unlock next autosave
-        /// </summary>
-        public static Int32 autosaveTimeSpanInSec = 60;
-
-
         private static Object saveAllLogsLock = new object();
 
         /// <summary>
@@ -147,7 +119,7 @@ namespace imbACE.Core.core
                 }
                 try
                 {
-                    if (autosaveEnabled || autosaveOverride)
+                    if (imbACECoreConfig.settings.doAllowLogAutosave || autosaveOverride)
                     {
                         foreach (KeyValuePair<Object, String> pair in aceLog.logBuilderRegistry)
                         {
@@ -217,14 +189,14 @@ namespace imbACE.Core.core
         {
            
                 Boolean output = false;
-                if (!autosaveEnabled) return false;
+                if (!imbACECoreConfig.settings.doAllowLogAutosave) return false;
 
                 if (!source.immediateSaveOn) return false;
                 if (source.outputPath.isNullOrEmpty()) return false;
 
-                if (autosaveTimeSpanOn)
+                if (imbACECoreConfig.settings.autosaveTimeSpanOn)
                 {
-                    if (DateTime.Now.Subtract(lastAutoSave).TotalSeconds > aceLog.autosaveTimeSpanInSec)
+                    if (DateTime.Now.Subtract(lastAutoSave).TotalSeconds > imbACECoreConfig.settings.autosaveTimeSpanInSec)
                     {
                         output = true;
                         source.lastAutoSave = DateTime.Now;
@@ -232,11 +204,11 @@ namespace imbACE.Core.core
                 }
 
                 FileInfo fi = null;
-                if (output && autoFlushLogPage)
+                if (output && imbACECoreConfig.settings.doAutoFlushLogPage)
                 {
                     lock (logAutoSavePermissionLock)
                     {
-                        if (source.Length.getFileSizeScaled(imbStringFormats.fileSizeUnit.Mb) > autoFlushLogPageKByteLimit)
+                        if (source.Length.getFileSizeScaled(imbStringFormats.fileSizeUnit.Mb) > imbACECoreConfig.settings.autoFlushLogPageKByteLimit)
                         {
 
                             String logOutput = source.ContentToString(false);
@@ -310,6 +282,7 @@ namespace imbACE.Core.core
 
 
 
+
         private static aceLogRegistry _logBuilderRegistry;
 
         /// <summary>
@@ -362,6 +335,12 @@ namespace imbACE.Core.core
             set { _externalLogBuilder = value; }
         }
 
+
+
+        public builderForLog GetMainLogBuilder()
+        {
+            return logBuilder;
+        }
 
 
         private builderForLog _logBuilder = new builderForLog();

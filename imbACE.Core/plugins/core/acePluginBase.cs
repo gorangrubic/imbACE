@@ -43,6 +43,7 @@ namespace imbACE.Core.plugins.core
     public abstract class acePluginBase : IAcePluginBase
     {
 
+        public String instanceName { get; set; } = "";
 
         private String _name = "";
         /// <summary>

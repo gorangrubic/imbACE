@@ -51,7 +51,12 @@ namespace imbACE.Services.console
     using imbACE.Core.core;
     using imbSCI.Core.data;
     using imbACE.Core.application;
+    using System.IO;
 
+    /// <summary>
+    /// Console state - keeps settings of the console 
+    /// </summary>
+    /// <seealso cref="imbACE.Core.core.aceSettingsStandaloneBase" />
     public abstract class aceAdvancedConsoleStateBase : aceSettingsStandaloneBase
     {
 
@@ -96,7 +101,7 @@ namespace imbACE.Services.console
         {
             get
             {
-                return aceApplicationInfo.FOLDERNAME_CONFIG +  "\\" + this.GetType().Name + "_state.xml";
+                return aceApplicationInfo.FOLDERNAME_CONFIG +  Path.DirectorySeparatorChar + this.GetType().Name + "_state.xml";
             }
         }
 
@@ -110,7 +115,7 @@ namespace imbACE.Services.console
         {
             get
             {
-                return aceApplicationInfo.FOLDERNAME_PROJECTS + "\\" + this.GetType().Name + "_jobs\\";
+                return aceApplicationInfo.FOLDERNAME_PROJECTS + Path.DirectorySeparatorChar + this.GetType().Name + "_jobs\\";
             }
         }
 
@@ -139,7 +144,7 @@ namespace imbACE.Services.console
 
 
         #region ----------- Boolean [ doWordInDebugMode ] -------  [If true the console will produce all kinds of log outputs, data and serialized objects]
-        private Boolean _doWordInDebugMode = false;
+        private Boolean _doWorkInDebugMode = false;
         /// <summary>
         /// If true the console will produce all kinds of log outputs, data and serialized objects
         /// </summary>
@@ -148,8 +153,8 @@ namespace imbACE.Services.console
         [Description("If true the console will produce all kinds of log outputs, data and serialized objects")]
         public Boolean doWorkdInDebugMode
         {
-            get { return _doWordInDebugMode; }
-            set { _doWordInDebugMode = value; OnPropertyChanged("doWordInDebugMode"); }
+            get { return _doWorkInDebugMode; }
+            set { _doWorkInDebugMode = value; OnPropertyChanged("doWordInDebugMode"); }
         }
         #endregion
 

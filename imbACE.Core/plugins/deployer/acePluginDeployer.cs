@@ -46,7 +46,7 @@ namespace imbACE.Core.plugins.deployer
     {
         public Type baseType { get; protected set; }
 
-        public acePluginDeployer()
+        protected acePluginDeployer()
         {
             baseType = typeof(T);
         }

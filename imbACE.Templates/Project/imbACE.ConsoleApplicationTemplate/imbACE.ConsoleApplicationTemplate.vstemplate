@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>imbACE Console Application Template</Name>
+    <Description>Console Application with custom: Advanced Command Console, State and Workspace classes</Description>
+    <Icon>veles_template_blue.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+    <SortOrder>-50</SortOrder>
+    <TemplateID>0a09a673-0abd-484a-8809-5261d2cfcb3c</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>ProjectName</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem TargetFileName="$fileinputname$Application.cs" ReplaceParameters="true">CommandConsoleApplication.cs</ProjectItem>
+      <Folder Name="console" TargetFolderName="console">
+        <ProjectItem TargetFileName="$fileinputname$Console.cs" ReplaceParameters="true">CommandConsoleDemo.cs</ProjectItem>
+        <ProjectItem TargetFileName="$fileinputname$State.cs" ReplaceParameters="true">CommandConsoleDemoState.cs</ProjectItem>
+        <ProjectItem TargetFileName="$fileinputname$Workspace.cs" ReplaceParameters="true">CommandConsoleDemoWorkspace.cs</ProjectItem>
+      </Folder>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

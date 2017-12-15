@@ -39,9 +39,10 @@ namespace imbACE.Services.consolePlugins
     using imbACE.Services.console;
     using imbSCI.Core.reporting;
     using imbSCI.Core.reporting.render;
+    using imbACE.Core.plugins;
 
     /// <summary>
-    /// Console plugin -- use it as public property of a <see cref="aceCommandConsole"/> class to enable command execution. 
+    /// Console plug-in -- use it as public property of a <see cref="aceCommandConsole"/> class to enable command execution. 
     /// </summary>
     /// <remarks>
     /// Methods from a plugin should be called with proper command prefix pointing to property (of <see cref="aceConsolePluginBase"/> type) name. 
@@ -49,28 +50,77 @@ namespace imbACE.Services.consolePlugins
     /// </remarks>
     /// <seealso cref="aceOperationSetExecutorBase" />
     /// <seealso cref="IAceOperationSetExecutor" />
-    public abstract class aceConsolePluginBase : aceOperationSetExecutorBase, IAceOperationSetExecutor, IAcePluginBase
+    public abstract class aceConsolePluginBase : aceOperationSetExecutorBase, IAceConsolePlugin
     {
+        /// <summary>
+        /// Reference to the parrent console
+        /// </summary>
+        /// <value>
+        /// The parent.
+        /// </value>
         public IAceOperationSetExecutor parent { get; set; }
 
+        /// <summary>
+        /// Indicates if this console plugin is running without parent console
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is standalone; otherwise, <c>false</c>.
+        /// </value>
         public Boolean IsStandalone { get
             {
                 return (parent == null);
             }
         }
 
+        /// <summary>
+        /// Name of this plugin
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public String name { get; set; } = "";
-        
+
+        protected String _instanceName = "";
+        /// <summary>
+        /// Instance name
+        /// </summary>
+        /// <value>
+        /// The name of the instance.
+        /// </value>
+        public String instanceName {
+            get
+            {
+                if (_instanceName == "") return name;
+                return _instanceName;
+            }
+            set
+            {
+                _instanceName = value;
+            }
+        }
+
+        /// <summary>
+        /// Title of this plugin - if standalone then alias to <see cref="name"/>, if connected to the parent then sufix title, added after parent console title
+        /// </summary>
+        /// <value>
+        /// The console title.
+        /// </value>
         public virtual String consoleTitle
         {
             get
             {
-                if (IsStandalone) return name;
-                return parent.consoleTitle + "." + name;
+                if (IsStandalone) return instanceName;
+                return parent.consoleTitle + "." + instanceName;
             }
         }
 
         private String _consoleHelp = "";
+        /// <summary>
+        /// First line of help to be shown for this plugin
+        /// </summary>
+        /// <value>
+        /// The console help.
+        /// </value>
         public virtual String consoleHelp
         {
             get
@@ -81,6 +131,12 @@ namespace imbACE.Services.consolePlugins
         }
 
         protected aceMenu _commands;
+        /// <summary>
+        /// Interface to it's command list
+        /// </summary>
+        /// <value>
+        /// The commands.
+        /// </value>
         aceMenu IAceOperationSetExecutor.commands
         {
             get
@@ -107,6 +163,12 @@ namespace imbACE.Services.consolePlugins
             }
         }
 
+        /// <summary>
+        /// Plugin's own response text renderer. By default (when response not set) it is just mirror to the <see cref="output"/> renderer
+        /// </summary>
+        /// <value>
+        /// The response.
+        /// </value>
         public virtual ITextRender response
         {
             get {
@@ -115,9 +177,15 @@ namespace imbACE.Services.consolePlugins
             set { _response = value; }
         }
 
-        ILogBuilder IAceOperationSetExecutor.output => throw new NotImplementedException();
+        ILogBuilder IAceOperationSetExecutor.output => output;
 
-        public List<string> helpHeader => throw new NotImplementedException();
+        /// <summary>
+        /// Additional help content to be displayed at beginning of the help file, after <see cref="consoleHelp"/>
+        /// </summary>
+        /// <value>
+        /// The help header.
+        /// </value>
+        public List<string> helpHeader { get; set; } = new List<string>();
 
         protected void prepare()
         {
@@ -129,7 +197,13 @@ namespace imbACE.Services.consolePlugins
 
         }
 
-        public aceConsolePluginBase(String __name, String __help = "", builderForLog __output =null)
+        /// <summary>
+        /// Stand-alone intended use
+        /// </summary>
+        /// <param name="__name">The name.</param>
+        /// <param name="__help">The help.</param>
+        /// <param name="__output">The output.</param>
+        protected aceConsolePluginBase(String __name, String __help = "", builderForLog __output =null)
         {
             name = __name;
             _consoleHelp = __help;
@@ -138,11 +212,11 @@ namespace imbACE.Services.consolePlugins
         }
 
         /// <summary>
-        /// Nested use
+        /// Use as built-in plugin to a console
         /// </summary>
         /// <param name="__parent">The parent.</param>
         /// <param name="__name">The name.</param>
-        public aceConsolePluginBase(IAceOperationSetExecutor __parent, String __name, String __help="")
+        protected aceConsolePluginBase(IAceOperationSetExecutor __parent, String __name, String __help="")
         {
             name = __name;
             _consoleHelp = __help;

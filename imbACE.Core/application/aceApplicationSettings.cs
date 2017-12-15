@@ -43,13 +43,17 @@ using imbSCI.Reporting;
 using imbSCI.Reporting.enums;
 using imbSCI.Reporting.interfaces;
 
+using imbACE.Core.enums.platform;
+
 namespace imbACE.Core.application
 {
     using System;
     using System.ComponentModel;
     using System.Xml.Serialization;
     using imbACE.Core.core;
+    using imbSCI.Core.config;
     using imbSCI.Core.files.folders;
+    using imbSCI.Reporting.config;
 
     /// <summary>
     /// Base class for application settings
@@ -67,10 +71,36 @@ namespace imbACE.Core.application
             _settings_filepath = folder.pathFor("application.xml");
             Load();
         }
+
         protected string _settings_filepath;
         [XmlIgnore]
         public override string settings_filepath { get { return _settings_filepath; }  }
 
+
+
+        /// <summary>
+        /// Gets or sets the ace core configuration.
+        /// </summary>
+        /// <value>
+        /// The ace core configuration.
+        /// </value>
+        public imbACECoreConfig aceCoreConfig { get; set; } = new imbACECoreConfig();
+
+        /// <summary>
+        /// Gets or sets the sci core configuration.
+        /// </summary>
+        /// <value>
+        /// The sci core configuration.
+        /// </value>
+        public imbSCICoreConfig sciCoreConfig { get; set; } = new imbSCICoreConfig();
+
+        /// <summary>
+        /// Gets or sets the sci reporting confing.
+        /// </summary>
+        /// <value>
+        /// The sci reporting confing.
+        /// </value>
+        public imbSCIReportingConfig sciReportingConfing { get; set; } = new imbSCIReportingConfig();
 
 
         /// <summary>Main thread loop delay in ms</summary>
@@ -87,6 +117,16 @@ namespace imbACE.Core.application
         [DisplayName("Culture")] //[imb(imbAttributeName.measure_letter, "")]
         [Description("Culture code")] // [imb(imbAttributeName.reporting_escapeoff)]
         public String Culture { get; set; } = "en-US";
+
+
+
+        /// <summary> Defines the size of the console application window </summary>
+        [Category("Flag")]
+        [DisplayName("Console Window size")]
+        [Description("Defines the size of the console application window")]
+        public windowSize ConsoleWindowSize { get; set; } = windowSize.medium;
+
+
 
 
 

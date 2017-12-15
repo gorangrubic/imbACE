@@ -113,28 +113,63 @@ namespace imbACE.Services.console
 
         private Boolean scriptExecutionAborted = false;
 
+        public Int32 currentLine { get; protected set; }
 
-        public void Execute(aceCommandConsole console, aceConsoleScript __parent,  Int32 delay=1)
+        /// <summary>
+        /// Executes the specified console.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="__parent">The parent.</param>
+        /// <param name="delay">The delay.</param>
+        /// <param name="skipLines">Number of lines to skip</param>
+        public void Execute(aceCommandConsole console, aceConsoleScript __parent,  Int32 delay=1, Int32 skipLines=-1)
         {
             parent = __parent;
 
             executionStart = DateTime.Now;
+            currentLine = 0;
             foreach (String line in this)
             {
-                if (line.isNullOrEmptyString() || line == Environment.NewLine)
+                if (currentLine > skipLines)
                 {
-                    // skipping empty line
-                }
-                else
-                {
-                    if (scriptExecutionAborted)
+                    if (line.isNullOrEmptyString() || line == Environment.NewLine)
                     {
-                        scriptExecutionAborted = false;
-                        break;
+                        // skipping empty line
                     }
-                    console.executeCommand(line);
-                    Thread.Sleep(delay);
+                    else
+                    {
+                        if (scriptExecutionAborted)
+                        {
+                            scriptExecutionAborted = false;
+                            break;
+                        }
+
+                        switch (imbACECoreConfig.settings.doShowScriptLines)
+                        {
+                            case scriptLineShowMode.none:
+                                break;
+                            case scriptLineShowMode.undefined:
+                                break;
+                            case scriptLineShowMode.onlyCodeLine:
+                                console.output.AppendLine(line);
+                                break;
+                            case scriptLineShowMode.fullPrefixAndCodeLine:
+                                console.output.log("Script [" + currentLine.ToString("D3") + "]: " + line);
+                                break;
+                            case scriptLineShowMode.codeNumberAndCodeLine:
+                                console.output.AppendLine("[" + currentLine.ToString("D3") + "] _" + line + "_");
+                                break;
+
+                        }
+
+                        
+
+                        console.executeCommand(line);
+                        Thread.Sleep(delay);
+                    }
                 }
+
+                currentLine++;
             }
             executionFinish = DateTime.Now;
         }

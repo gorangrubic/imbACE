@@ -43,12 +43,12 @@ namespace imbACE.Services.terminal.core
     public interface IAceTerminalScreen
     {
         /// <summary>
-        /// naslov ekrana
+        /// Screen title
         /// </summary>
         String title { get; set; }
 
         /// <summary>
-        /// Layout terminalnog ekrana
+        /// Screen layout
         /// </summary>
         textLayout layout { get; set; }
 
@@ -58,38 +58,43 @@ namespace imbACE.Services.terminal.core
         string layoutFooterMessage { get; set; }
 
         /// <summary>
-        /// poruka za naslov prozora
+        /// Message content for layout title
         /// </summary>
         string layoutTitleMessage { get; set; }
 
         /// <summary>
-        /// Poruka za statusni header
+        /// Message for status line
         /// </summary>
         string layoutStatusMessage { get; set; }
 
-        /// <summary>
-        /// ekran na koji se vraca kada korisnik pritisne back - automatski podesava ovu vrednost
-        /// </summary>
-        IAceTerminalScreen parentScreen { get; set; }
+
 
         /// <summary>
-        /// Obnavlja dinamicki deo sadrzaja
+        /// Refresh call for dynamic part of content or applicative logic
         /// </summary>
         void refresh();
 
-        /// <summary>
-        /// #2 Očitava ulaz -- reseno na nivou aceTErminalScreenBase
-        /// </summary>
-        inputResultCollection read(inputResultCollection __results);
 
         /// <summary>
-        /// #3 Vrsi rad nakon sto je obradjen ulaz
+        /// Reads the user input
         /// </summary>
+        /// <param name="__results">The results.</param>
+        /// <returns></returns>
+        inputResultCollection read(inputResultCollection __results);
+
+
+        /// <summary>
+        /// Executes the screen-specific logic
+        /// </summary>
+        /// <param name="__inputs">The inputs.</param>
+        /// <returns></returns>
         inputResultCollection execute(inputResultCollection __inputs);
 
         /// <summary>
-        /// #1 Generise sadrzaj
+        /// #1 Renders the content
         /// </summary>
+        /// <param name="platform">The platform on which the rendering should be performed</param>
+        /// <param name="doClearScreen">if set to <c>true</c> it will clear screen.</param>
         void render(IPlatform platform, Boolean doClearScreen=true);
     }
 }

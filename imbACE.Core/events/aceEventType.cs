@@ -63,6 +63,11 @@ namespace imbACE.Core.events
         Loaded,
 
         /// <summary>
+        /// The opened: something was opened
+        /// </summary>
+        Opened,
+
+        /// <summary>
         /// The updated: something was just updated
         /// </summary>
         Updated,

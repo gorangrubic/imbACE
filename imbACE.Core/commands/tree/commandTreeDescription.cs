@@ -63,7 +63,7 @@ namespace imbACE.Core.commands.tree
         {
             item.parent = this;
             item.name = __name;
-            if (!children.ContainsKey(item.name)) children.Add(item.name, item);
+            if (!children.Contains(item.name)) children.Add(item.name, item);
         }
 
         public commandTreeDescription(String __name, graphNode __parent)

@@ -33,6 +33,11 @@ namespace imbACE.ApplicationDemo.terminalApp
     using imbACE.Core.application;
     using imbACE.Services.application;
     using imbACE.Services.terminal.core;
+    using imbACE.Services.terminal.dialogs;
+    using imbACE.Services.terminal.dialogs.core;
+    using imbACE.Services.terminal.smartScreen;
+    using imbACE.Services.textBlocks.smart;
+    using System;
 
     public class ApplicationDemo : aceTerminalApplication
     {
@@ -41,42 +46,44 @@ namespace imbACE.ApplicationDemo.terminalApp
         public static void Main(string[] args)
         {
             application = new ApplicationDemo();
-
+            
             application.StartApplication(args);
+            
+            // here you may place code that has to be performed after user called application closing
+            // ...
+        }
 
 
+        public string TEXT_WELCOME = @"This is imbACE: Advanced Console Environment application with Text User Interface called TextBlocks."
+           + "This is Welcome Screen customizable preset class, showing this message and given number of menu options in block below this text box. You maybe noticed there is whole-word line break algorithm applied!";
+
+        public ApplicationDemo()
+        {
+            screenWelcome = new aceTerminalWelcomeScreen<ApplicationDemo>(this, TEXT_WELCOME, "ACE Terminal Application DEMO", "Welcome screen");
             
         }
 
+        
         public override void doUpdateInterface()
         {
             //
         }
 
-        public override void goBack()
-        {
-            //
-        }
+
 
         public override void goToMainPage()
         {
-            //
+         
+            dialogSelectFile dSelectFile = new dialogSelectFile(platform, folder_projects.path, dialogSelectFileMode.selectFileToOpen, "*.*", "DEMO for dialogSelectFile");
+            var results = dSelectFile.open(platform, new dialogFormatSettings(dialogStyle.greenDialog, dialogSize.mediumBox));
+
+            var dUniversal = new dialogMessageBoxWithOptions<String>(platform, "Dialog with options", "Array of strings as options", new String[] { "Option 01", "Option 02", "Last Option" });
+            var option = dUniversal.open(platform, new dialogFormatSettings(dialogStyle.greenDialog, dialogSize.mediumBox));
+            
         }
 
-        public override void goToWelcomePage()
-        {
-            //
-        }
-
-        public override void onScreenClosed(IAceTerminalScreen closedScreen)
-        {
-            //
-        }
-
-        public override void onScreenOpened(IAceTerminalScreen openedScreen)
-        {
-            //
-        }
+     
+     
 
         public override void setAboutInformation()
         {

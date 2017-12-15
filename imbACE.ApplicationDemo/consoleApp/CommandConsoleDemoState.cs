@@ -31,9 +31,17 @@ namespace imbACE.ApplicationDemo.consoleApp
 {
     using imbACE.Services.console;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="imbACE.Services.console.aceAdvancedConsoleStateBase" />
     public class CommandConsoleDemoState:aceAdvancedConsoleStateBase
     {
+        public CommandConsoleDemoState()
+        {
 
+        }
     }
 
 }

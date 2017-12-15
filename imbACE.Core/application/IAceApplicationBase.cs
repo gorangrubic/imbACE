@@ -174,6 +174,8 @@ namespace imbACE.Core.application
 
         /// <summary>Event handler for <see cref="aceEventType.Closing"/>" at <see cref="aceEventOrigin.Application"/>, to hook reaction method on to. </summary>;
         event EventHandler<aceEventGeneralArgs> onEventApplicationClosing;
+
+        void doQuit();
     }
 
 }
