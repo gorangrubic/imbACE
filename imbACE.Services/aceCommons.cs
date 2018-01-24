@@ -47,6 +47,7 @@ namespace imbACE.Services
     using imbACE.Services.platform.interfaces;
     using imbSCI.Core.interfaces;
     using imbSCI.Data.enums;
+    using imbACE.Core;
 
 
     /// <summary>
@@ -194,9 +195,9 @@ namespace imbACE.Services
                 
             }
             String filename = "_crash_report_" + unhandledExceptionCount.ToString("D3") + DateTime.Now.ToString("MM-dd") + ".txt";
-            
 
-            String path = crashReportPath.add(filename, "\\");
+            String path = appManager.Application.folder_logs.pathFor(filename, getWritableFileMode.autoRenameExistingToBack);
+            
 
             File.WriteAllText(path, msg);
 

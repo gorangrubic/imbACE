@@ -1,8 +1,4 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="cacheResponseForType.cs" company="imbVeles" >
-//
-// Copyright (C) 2017 imbVeles
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the +terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -17,9 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/. 
 // </copyright>
 // <summary>
-// Project: imbACE.Services
-// Author: Goran Grubic
+// Project: 
+// Author: 
 // ------------------------------------------------------------------------------------------------------------------
+// Created with imbVeles / imbACE framework
 // Project web site: http://blog.veles.rs
 // GitHub: http://github.com/gorangrubic
 // Mendeley profile: http://www.mendeley.com/profiles/goran-grubi2/
@@ -27,41 +24,21 @@
 // Email: hardy@veles.rs
 // </summary>
 // ------------------------------------------------------------------------------------------------------------------
-namespace imbACE.Core.cache
+namespace imbACE.TestUnit.test_stuff
 {
     using System;
-    using imbSCI.Core.files.folders;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
-    /// <summary>
-    /// Container class that holds response from cache
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="imbSCI.Core.core.imbBindable" />
-    /// <seealso cref="imbACE.Core.reporting.IAppendDataFields" />
-    public class cacheResponseForType<T> : cacheResponseForType where T : new()
+    using imbACE.Services.console;
+
+    public class testConsoleState : aceAdvancedConsoleStateBase
+    {
+        public testConsoleState()
         {
-            public cacheResponseForType(String __instanceID, folderNode __directory, Boolean __createNewOnNotFound = false) : base(__instanceID, __directory, __createNewOnNotFound, typeof(T))
-            {
 
-            }
-
-
-            /// <summary>
-            /// Typed instance of item loaded from cache
-            /// </summary>
-            public T instanceTyped
-            {
-                get
-                {
-
-                    return (T)instance;
-                }
-                set
-                {
-
-                    instance = value;
-                }
-            }
         }
+    }
 
 }

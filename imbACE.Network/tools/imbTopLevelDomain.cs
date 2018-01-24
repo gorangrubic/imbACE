@@ -24,6 +24,14 @@ namespace imbACE.Network.tools
   //  [imbSql(imbSqlSettings.setTableName, "topLevelDomains")]
     public class imbTopLevelDomain : imbBindable //imbSqlEntityBase
     {
+
+
+        public imbTopLevelDomain()
+        {
+            subDomains = new List<imbTopLevelDomain>();
+            relatedServers = new List<imbWhoIsServer>();
+        }
+
         #region -----------  countryCode  -------  [dvoslovna oznaka zemlje]
 
         private String _countryCode;
@@ -177,21 +185,21 @@ namespace imbACE.Network.tools
         //public string countryName = "";
 
         //  [imbSql(sqlEntityPropMode.skip)]
+        [XmlIgnore]
         public imbWhoIsServer relatedServer;
         //[imbSql(sqlEntityPropMode.skip)]
+        [XmlIgnore]
         public List<imbWhoIsServer> relatedServers;
 
         //  [imbSql(sqlEntityPropMode.skip)]
         public int shuffleIndex = 0;
-        public List<imbTopLevelDomain> subDomains;
+        [XmlIgnore]
+        public List<imbTopLevelDomain> subDomains = new List<imbTopLevelDomain>();
 
-        public imbTopLevelDomain()
-        {
-            subDomains = new List<imbTopLevelDomain>();
-            relatedServers = new List<imbWhoIsServer>();
-        }
+
 
         //[imbSql(sqlEntityPropMode.skip)]
+        [XmlIgnore]
         public imbWhoIsServer shuffledServer
         {
             get

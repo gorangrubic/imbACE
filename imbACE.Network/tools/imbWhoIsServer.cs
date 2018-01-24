@@ -28,6 +28,9 @@ namespace imbACE.Network.tools
    // [imbSql(shemaFromTypeMode.onlyDirect)]
     public class imbWhoIsServer : imbBindable
     {
+
+
+
         #region -----------  url  -------  [Adresa WHO is Servera]
 
         private String _url;

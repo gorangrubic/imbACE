@@ -196,9 +196,9 @@ namespace imbACE.Core.cache
                 }
                 catch (Exception ex)
                 {
-
-
-                throw new aceGeneralException("Cache", ex, this, "Cache system");
+                    aceLog.log("Cache [" + instanceID + "] broken: " + ex.Message);
+                    File.Delete(filepath);
+                    instance = new T();
                 }
             }
 

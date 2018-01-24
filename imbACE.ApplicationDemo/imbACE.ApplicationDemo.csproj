@@ -19,12 +19,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\imbACE_Test\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>1</WarningLevel>
-    <DocumentationFile>bin\Debug\imbACE.ApplicationDemo.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\imbACE_Test\imbACE.ApplicationDemo.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,20 +39,23 @@
     <ApplicationIcon>imbVeles_white.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>imbACE.ApplicationDemo.terminalApp.ApplicationDemo</StartupObject>
+    <StartupObject>imbACE.ApplicationDemo.consoleApp.ConsoleApplicationDemo</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="imbSCI.Core, Version=0.1.6558.28706, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Core.dll</HintPath>
+    <Reference Include="imbSCI.Core, Version=0.1.6598.31781, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Core.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.Data, Version=0.1.6558.26332, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Data.dll</HintPath>
+    <Reference Include="imbSCI.Data, Version=0.1.6598.24488, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Data.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.DataComplex, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.DataComplex.dll</HintPath>
+    <Reference Include="imbSCI.DataComplex, Version=0.1.6598.31787, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.DataComplex.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.Reporting, Version=0.1.6558.28707, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.1.1\lib\net40\imbSCI.Reporting.dll</HintPath>
+    <Reference Include="imbSCI.Reporting, Version=0.1.6598.31787, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=3.20.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.20.2\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

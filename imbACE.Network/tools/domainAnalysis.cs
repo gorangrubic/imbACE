@@ -1,5 +1,6 @@
 ﻿namespace imbACE.Network.tools
 {
+    using imbACE.Core.core;
     using imbACE.Core.core.exceptions;
     using imbACE.Network.extensions;
     using imbSCI.Core.extensions.text;
@@ -85,7 +86,7 @@
 
             if (domainName.isNullOrEmpty())
             {
-                throw new aceGeneralException("Domain name extraction failed from [" + __url + "] ", null, this, "Domain name extraction failed");
+                aceLog.log("Domain name extraction failed from [" + __url + "] + Domain name extraction failed");
             }
 
             List<String> parts = domainName.SplitSmart(".", "", true); //.Split(".".ToArray(), StringSplitOptions.RemoveEmptyEntries).toList();
@@ -150,7 +151,7 @@
             domainRootName = domainRootName.Trim('.');
             if (domainRootName.Contains("."))
             {
-                throw new aceGeneralException("domainAnalysis failed [" + __url + "] - root domain name contains dot -- you have to add support for this TLD to have this working properly");
+               // aceLog.log("domainAnalysis failed [" + __url + "] - root domain name contains dot -- you have to add support for this TLD to have this working properly");
             }
 
             if (!domainRootName.isNullOrEmptyString())

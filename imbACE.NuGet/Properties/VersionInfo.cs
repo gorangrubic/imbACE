@@ -1,10 +1,10 @@
 using System.Reflection;
 
 // This should be the same version as below
-[assembly: AssemblyFileVersion("0.1.1.2")]
-
 #if DEBUG
-[assembly: AssemblyInformationalVersion("0.1.1.2")]
+[assembly: AssemblyFileVersion("0.1.1.15")]
+[assembly: AssemblyInformationalVersion("0.1.1.15")]
 #else
-[assembly: AssemblyInformationalVersion("0.1.*")]
+[assembly: AssemblyFileVersion("0.1.2.7")]
+[assembly: AssemblyInformationalVersion("0.1.2.7")]
 #endif

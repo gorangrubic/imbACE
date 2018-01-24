@@ -309,7 +309,7 @@ namespace imbACE.Services.console
 
 
 
-        public abstract aceCommandConsoleIOEncode encode { get;}
+        public virtual aceCommandConsoleIOEncode encode { get { return aceCommandConsoleIOEncode.dos; } }
 
         /// <summary>
         /// command tree, used for help generation
@@ -544,7 +544,7 @@ namespace imbACE.Services.console
 
                         if (aceTerminalInput.askAnyKeyInTime("Press ESCAPE (or wait timeout) to throw the exception --- any other key to continue execution", ConsoleKey.Escape, 15, true, 15) == ConsoleKey.Escape)
                         {
-                            throw axe;
+                             throw axe;
                         }
 
                         
@@ -558,7 +558,7 @@ namespace imbACE.Services.console
         public Boolean saveClipboard { get; set; } = false;
 
 
-        private String _linePrefix = ">";
+        private String _linePrefix = ">";//G:\imbWBI_Test\projects\itmPlugin\itm01\industryTermModelProject.xml
         /// <summary>
         /// Prefix to show in the command line
         /// </summary>

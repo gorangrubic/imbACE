@@ -11,12 +11,19 @@ namespace imbACE.Network.tools
 
     using System;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
 
     #endregion
 
-   // [imbSql(shemaFromTypeMode.onlyDirect)]
+    // [imbSql(shemaFromTypeMode.onlyDirect)]
     public class imbCountryInfoEntry : imbBindable
     {
+
+        public imbCountryInfoEntry()
+        {
+
+        }
+
         #region --- tldList ------- Lista svih top level domena
 
         private String _tldList;
@@ -42,6 +49,7 @@ namespace imbACE.Network.tools
         /// <summary>
         /// Top Level domains by TLD sufix
         /// </summary>
+        
         private Dictionary<String, imbTopLevelDomain> _countryTLDindex;
 
         #region imbObject Property <Dictionary<String, imbTopLevelDomain>> countryTLDindex
@@ -49,7 +57,8 @@ namespace imbACE.Network.tools
         /// <summary>
         /// imbControl property countryTLDindex tipa Dictionary<String, imbTopLevelDomain>
         /// </summary>
-      //  [imbSql(sqlEntityPropMode.skip)]
+        //  [imbSql(sqlEntityPropMode.skip)]
+        [XmlIgnore]
         public Dictionary<String, imbTopLevelDomain> countryTLDindex
         {
             get

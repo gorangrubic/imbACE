@@ -1,8 +1,4 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CommandConsoleDemo.cs" company="imbVeles" >
-//
-// Copyright (C) 2017 imbVeles
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the +terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -17,9 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/. 
 // </copyright>
 // <summary>
-// Project: imbACE.ApplicationDemo
-// Author: Goran Grubic
+// Project: 
+// Author: 
 // ------------------------------------------------------------------------------------------------------------------
+// Created with imbVeles / imbACE framework
 // Project web site: http://blog.veles.rs
 // GitHub: http://github.com/gorangrubic
 // Mendeley profile: http://www.mendeley.com/profiles/goran-grubi2/
@@ -27,27 +24,25 @@
 // Email: hardy@veles.rs
 // </summary>
 // ------------------------------------------------------------------------------------------------------------------
-namespace imbACE.ApplicationDemo.consoleApp
+namespace imbACE.TestUnit.test_stuff
 {
-    using imbACE.Core.data.mysql;
-    using imbACE.Network.tools;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     using imbACE.Services.console;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <seealso cref="imbACE.Services.console.aceAdvancedConsole{imbACE.ApplicationDemo.consoleApp.CommandConsoleDemoState, imbACE.ApplicationDemo.consoleApp.CommandConsoleDemoWorkspace}" />
-    public class CommandConsoleDemo : aceAdvancedConsole<CommandConsoleDemoState, CommandConsoleDemoWorkspace>
+    public class testConsoleConsole : aceAdvancedConsole<testConsoleState, testConsoleWorkspace>
     {
-        public override string consoleTitle { get { return "Demo Console"; } }
+        public override string consoleTitle { get { return "testConsole Console"; } }
 
-        public CommandConsoleDemo() : base()
+        public testConsoleConsole() : base()
         {
 
 
         }
 
-        public override aceCommandConsoleIOEncode encode => aceCommandConsoleIOEncode.dos;
 
         /// <summary>
         /// Gets the workspace.
@@ -55,40 +50,34 @@ namespace imbACE.ApplicationDemo.consoleApp
         /// <value>
         /// The workspace.
         /// </value>
-        public override CommandConsoleDemoWorkspace workspace {
+        public override testConsoleWorkspace workspace
+        {
             get
             {
                 if (_workspace == null)
                 {
-                    _workspace = new CommandConsoleDemoWorkspace(this);
+                    _workspace = new testConsoleWorkspace(this);
                 }
                 return _workspace;
             }
         }
 
-        /// <summary>
-        /// Customized code to be executed once the console is started
-        /// </summary>
+        public override aceCommandConsoleIOEncode encode {
+            
+        get
+            {
+                return aceCommandConsoleIOEncode.dos;
+            }
+        }
+
         public override void onStartUp()
         {
-            base.onStartUp();
-
-            dataBaseTarget dBT = new dataBaseTarget();
-
-
-            
-
-          imbACE.Network.tools.systemKnowledge.prepare(dBT, output);
-
-            domainAnalysis da = new domainAnalysis("http://www.koplas.co.rs");
-            
-
-            // put here your code 
+            //
         }
 
         protected override void doCustomSpecialCall(aceCommandActiveInput input)
         {
-            
+
         }
     }
 

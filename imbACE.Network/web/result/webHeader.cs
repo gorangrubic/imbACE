@@ -1,7 +1,7 @@
 namespace imbACE.Network.web.result
 {
     using imbSCI.Data.data;
-    using Newtonsoft.Json;
+  // using Newtonsoft.Json;
     #region imbVeles using
 
     using System;
@@ -11,7 +11,7 @@ namespace imbACE.Network.web.result
     /// <summary>
     /// imbVeles Web Header
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
+    
     public class webHeader : imbBindable
     {
         public webHeader()
@@ -31,7 +31,7 @@ namespace imbACE.Network.web.result
         /// <summary>
         /// tip hedera
         /// </summary>
-        [JsonProperty]
+        
         public String requestHeader
         {
             get { return _requestHeader; }
@@ -51,7 +51,7 @@ namespace imbACE.Network.web.result
         /// <summary>
         /// Podatak koji je upisan
         /// </summary>
-        [JsonProperty]
+        
         public String value
         {
             get { return _value; }

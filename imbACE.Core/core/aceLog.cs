@@ -482,6 +482,10 @@ namespace imbACE.Core.core
             }
         }
 
+        public bool VAR_AllowAutoOutputToConsole => ((ILogBuilder)logBuilder).VAR_AllowAutoOutputToConsole;
+
+        public bool VAR_AllowInstanceToOutputToConsole { get => ((ILogBuilder)logBuilder).VAR_AllowInstanceToOutputToConsole; set => ((ILogBuilder)logBuilder).VAR_AllowInstanceToOutputToConsole = value; }
+
         public object addDocument(string name, bool scopeToNew = true, getWritableFileMode mode = getWritableFileMode.autoRenameExistingOnOtherDate, reportOutputFormatName format = reportOutputFormatName.none)
         {
             return ((ITextRender)logBuilder).addDocument(name, scopeToNew, mode, format);

@@ -17,16 +17,25 @@ namespace imbACE.Core.plugins
 {
 
     /// <summary>
-    /// Scans for plug-ins that have {T} interface
+    /// Base class for various plugin managers
     /// </summary>
     /// <typeparam name="T">Interface for managed plugin type</typeparam>
-    public class internalPluginManager<T> : pluginManagerBase where T: class, IAcePluginBase
+    public abstract class internalPluginManager<T> : pluginManagerBase where T: class
     {
-        public internalPluginManager()
+
+        
+
+        protected virtual Boolean AllowNonImbAssemblies { get { return false; } }
+
+        protected internalPluginManager()
         {
             name = typeof(T).Name + " Manager";
         }
 
+        /// <summary>
+        /// Initializes loading of plugins
+        /// </summary>
+        /// <param name="output">The output.</param>
         protected void loadPlugins(ILogBuilder output)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -34,24 +43,40 @@ namespace imbACE.Core.plugins
 
             foreach (Assembly ass in assemblies)
             {
-                var types = ass.GetTypes();
-
-                foreach (Type type in types)
+                try
                 {
-                    if (type.IsInterface || type.IsAbstract)
-                    {
-                        continue;
-                    }
-                    else
+
+                    if (ass.FullName.StartsWith("imb") || AllowNonImbAssemblies)
                     {
 
-                        if (type.GetInterface(pluginType.FullName) != null)
+                        var types = ass.GetTypes();
+
+                        foreach (Type type in types)
                         {
-                            registerPlugin(type, ass.GetName().FullName, output);
+                            if (type.IsInterface || type.IsAbstract)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+
+                                if (type.GetInterface(pluginType.FullName) != null)
+                                {
+                                    registerPlugin(type, type.Namespace, output);
+                                }
+                            }
                         }
+
                     }
+                } catch (Exception ex)
+                {
+                    output.log("Assembly [" + ass.FullName + "] type harvest failed");
+                    output.log("Exception: " + ex.Message);
+                    
                 }
             }
+
+            
         }
 
 
@@ -62,7 +87,7 @@ namespace imbACE.Core.plugins
         /// <param name="instanceName">Name of the instance.</param>
         /// <param name="output">The output.</param>
         /// <returns></returns>
-        public T GetPluginInstance(String plugin_name, String instanceName="", ILogBuilder output = null)
+        protected T GetPluginInstance(String plugin_name, String instanceName="", ILogBuilder output = null, Object[] constructorSettings = null)
         {
 
             Type t = resolvePlugin(plugin_name, output);
@@ -74,9 +99,23 @@ namespace imbACE.Core.plugins
 
             try
             {
-                instance = Activator.CreateInstance(t, new Object[] { }) as T;
+                List<Object> settings = new List<Object>();
+                if (constructorSettings != null)
+                {
+                    settings.AddRange(constructorSettings);
+                }
 
-                if (instanceName != "") instance.instanceName = instanceName;
+                instance = Activator.CreateInstance(t, settings.ToArray()) as T;
+
+
+                if (instance is IAcePluginBase)
+                {
+                    IAcePluginBase instance_IAcePluginBase = (IAcePluginBase)instance;
+                    instance_IAcePluginBase.instanceName = instanceName;
+    
+                }
+
+                
             }
             catch (Exception ex) {
 

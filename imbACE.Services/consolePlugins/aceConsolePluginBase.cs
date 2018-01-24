@@ -192,6 +192,7 @@ namespace imbACE.Services.consolePlugins
             if (output == null)
             {
                 _output = new builderForLog();
+
                 aceLog.consoleControl.setAsOutput(_output, consoleTitle);
             }
 

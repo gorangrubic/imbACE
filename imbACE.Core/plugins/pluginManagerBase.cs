@@ -21,6 +21,33 @@ namespace imbACE.Core.plugins
     /// </summary>
     public abstract class pluginManagerBase
     {
+
+        protected aceConcurrentDictionary<Type> dirtyDictionary { get; set; } = new aceConcurrentDictionary<Type>();
+
+
+        /// <summary>
+        /// If true - it will transform both detected type name and query type name into "dirty name" form that increase chance of name match 
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [support dirty naming]; otherwise, <c>false</c>.
+        /// </value>
+        protected abstract Boolean supportDirtyNaming { get; }
+
+        protected String getDirtyForm(String typeName)
+        {
+            typeName = typeName.Replace("_", "");
+            typeName = typeName.Replace("-", "");
+            typeName = typeName.Replace(" ", "");
+            typeName = typeName.Replace(".", "");
+            typeName = typeName.Replace("<", "");
+            typeName = typeName.Replace(">", "");
+            typeName = typeName.Replace("~", "");
+            typeName = typeName.Replace("^", "");
+            typeName = typeName.ToUpper();
+            return typeName;
+        }
+
+
         /// <summary>
         /// Dictionary indexing plugins by relative directory path and type short name: e.g. /myPlugins/reporter.dll -> myPlugins.reporter
         /// </summary>
@@ -78,6 +105,16 @@ namespace imbACE.Core.plugins
             }
             else
             {
+                if (supportDirtyNaming)
+                {
+                    String dirtyName = getDirtyForm(plugin_name);
+                    if (dirtyDictionary.ContainsKey(dirtyName))
+                    {
+                        return dirtyDictionary[dirtyName];
+                    }
+                }
+
+
                 if (output != null)
                 {
                     output.log("Plugin class [" + plugin_name + "] not found.");
@@ -95,12 +132,12 @@ namespace imbACE.Core.plugins
         /// <param name="output">The output.</param>
         protected void registerPlugin(Type type, String sourceDllPath, ILogBuilder output)
         {
-            if (bannedShortNames.ContainsKey(type.Name))
+            if (!bannedShortNames.ContainsKey(type.Name))
             {
 
                 if (pluginTypesByName.ContainsKey(type.Name))
                 {
-                    if (output != null) output.log("Short-name registration of [" + type.Name + "] failed: name already occupied. You'll have to call both by [directory].[typename] path.");
+                    //if (output != null) output.log("Short-name registration of [" + type.Name + "] failed: name already occupied. You'll have to call both by [directory].[typename] path.");
                     bannedShortNames.Add(type.Name, type);
 
                     Type pair = null;
@@ -113,29 +150,80 @@ namespace imbACE.Core.plugins
                 else
                 {
                     pluginTypesByName.Add(type.Name, type);
-                    if (output != null) output.log("Short-name registration of [" + type.Name + "] done.");
+                    //if (output != null) output.log("Short-name registration of [" + type.Name + "] done.");
                 }
             }
             else
             {
-                if (output != null) output.log("Short-name registration of [" + type.Name + "] failed, the name is banned from short-name registration for [" + bannedShortNames[type.Name] + "] plugins, so far");
+                //if (output != null) output.log("Short-name registration of [" + type.Name + "] failed, the name is banned from short-name registration for [" + bannedShortNames[type.Name] + "] plugins.");
             }
 
-            String dirSufix = sourceDllPath.removeStartsWith(folderWithPlugins.path).Replace(Path.DirectorySeparatorChar, '.');
-            dirSufix = dirSufix.Replace("/", ".");
-            dirSufix = dirSufix.Replace("..", ".");
-
-            String dirNamePath = dirSufix.add(type.Name, ".");
-
-            if (pluginTypesByPathName.ContainsKey(dirNamePath))
+            if (!sourceDllPath.isNullOrEmpty())
             {
-                if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] failed - can't have multiple plugins with the same name, in the same directory. Move it in sub folder or recompile under another class name");
+                String dirSufix = sourceDllPath;
+                if (folderWithPlugins != null)
+                {
+                    dirSufix = sourceDllPath.removeStartsWith(folderWithPlugins.path).Replace(Path.DirectorySeparatorChar, '.');
+                }
+                dirSufix = dirSufix.Replace("/", ".");
+                dirSufix = dirSufix.Replace("..", ".");
+
+                String dirNamePath = dirSufix.add(type.Name, ".");
+
+                if (pluginTypesByPathName.ContainsKey(dirNamePath))
+                {
+                    if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] failed - can't have multiple plugins with the same name, in the same directory. Move it in sub folder or recompile under another class name");
+                }
+                else
+                {
+                    if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] done. ");
+                }
             }
-            else
+
+            if (supportDirtyNaming)
             {
-                if (output != null) output.log("[directory].[typename] (" + dirNamePath + ") registration of [" + type.Name + "] done. ");
+                String dirtyName = getDirtyForm(type.Name);
+                if (!dirtyDictionary.ContainsKey(dirtyName))
+                {
+                    dirtyDictionary.Add(dirtyName, type);
+
+                    
+                }
             }
         }
+
+
+        /// <summary>
+        /// Gets all callable needles for all types registered, 
+        /// </summary>
+        /// <returns></returns>
+        public aceDictionarySet<Type, String> GetAllRegistrations()
+        {
+            aceDictionarySet<Type, String> output = new aceDictionarySet<Type, string>();
+
+
+            foreach (var p in pluginTypesByName)
+            {
+                output.Add(p.Value, p.Key);
+            }
+
+            foreach (var p in pluginTypesByPathName)
+            {
+                output.Add(p.Value, p.Key);
+            }
+
+            if (supportDirtyNaming)
+            {
+                foreach (var p in dirtyDictionary)
+                {
+                    output.Add(p.Value, p.Key);
+                }
+            }
+
+            return output;
+
+        }
+
 
         /// <summary>
         /// Gets or sets the folder with plugins.

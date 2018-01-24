@@ -12,7 +12,7 @@
     using imbSCI.Core.extensions.data;
     using imbSCI.Core.reporting;
     using imbSCI.Data.data;
-    using Newtonsoft.Json;
+  // using Newtonsoft.Json;
 
     #endregion
 
@@ -364,7 +364,7 @@
         /// <summary>
         /// response objekat koji je dobio pri instanciranju
         /// </summary>
-        [JsonIgnore]
+        
         [XmlIgnore]
         public WebResponse _response
         {

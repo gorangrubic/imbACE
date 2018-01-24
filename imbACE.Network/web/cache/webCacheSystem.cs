@@ -10,14 +10,17 @@ namespace imbACE.Network.web.cache
     using imbSCI.Core.math;
     using imbSCI.Data;
     using imbSCI.Data.data;
-    using Newtonsoft.Json;
+  // using Newtonsoft.Json;
     using imbSCI.Data.enums;
     using System.Text;
     using imbACE.Network.extensions;
     using imbACE.Core.application;
     using imbSCI.Core.files.folders;
+    using imbSCI.Core.files;
 
-
+    /// <summary>
+    /// Web Cache System
+    /// </summary>
     public static class webCacheSystem
     {
 
@@ -48,7 +51,8 @@ namespace imbACE.Network.web.cache
             {
                 if (_webCacheFolder == null)
                 {
-                    _webCacheFolder = new folderNode(aceApplicationInfo.FOLDERNAME_CACHE + Path.PathSeparator + "web",  "WebCache", "Web cache repo");
+                    
+                    _webCacheFolder = new folderNode(aceApplicationInfo.FOLDERNAME_CACHE + Path.DirectorySeparatorChar + "web",  "WebCache", "Web cache repo");
                 }
 
                 return _webCacheFolder;
@@ -72,11 +76,11 @@ namespace imbACE.Network.web.cache
 
 
 
-                    String json_content = JsonConvert.SerializeObject(httpResponse);
+            String json_content = objectSerialization.ObjectToXML(httpResponse); //objectSerialization.SerializeJson(httpResponse);
 
-                    FileInfo fc = content.saveStringToFile(pth, getWritableFileMode.overwrite, Encoding.UTF8);
+            FileInfo fc = content.saveStringToFile(pth, getWritableFileMode.overwrite, Encoding.UTF8);
 
-                    FileInfo js = json_content.saveStringToFile(pthr, getWritableFileMode.overwrite, Encoding.UTF8);
+            FileInfo js = json_content.saveStringToFile(pthr, getWritableFileMode.overwrite, Encoding.UTF8);
 
         }
 
@@ -154,7 +158,8 @@ namespace imbACE.Network.web.cache
                     }
                     else
                     {
-                        output.httpContent = JsonConvert.DeserializeObject(httpRes, typeof(webResponse)) as webResponse;
+                        output.httpContent = objectSerialization.loadObjectFromXML<webResponse>(httpRes);  //objectSerialization.DeserializeJson<webResponse>(httpRes);
+                        
                         output.cacheFound = true;
                     }
 
@@ -188,7 +193,7 @@ namespace imbACE.Network.web.cache
             if (forHttpResponse)
             {
                 prefix = prefix + "_httpRespornce_";
-                extension = "json";
+                extension = "xml";
             }
             url = url.getFilename();
             url = url.removeUrlShema().getCleanFilePath().getFilename();

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets 
+    xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Plugin property</Title>
+            <Shortcut>_acePluginProp</Shortcut>
+            <Description>Plugin property at AceCommandConsole</Description>
+            <Author>imbVeles</Author>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal>
+                    <ID>type</ID>
+                    <ToolTip>Property type</ToolTip>
+                    <Default>itmPlugin</Default>
+                </Literal>
+                <Literal>
+                    <ID>name</ID>
+                    <ToolTip>Name of the method</ToolTip>
+                    <Default>plugin</Default>
+                </Literal>
+                <Literal>
+                    <ID>help</ID>
+                    <ToolTip>Plugin</ToolTip>
+                    <Default>Embedded plugin</Default>
+                </Literal>
+                <Literal>
+                    <ID>group</ID>
+                    <ToolTip>Functional group, used just for user manual method categorization</ToolTip>
+                    <Default>Plugin</Default>
+                </Literal>
+            </Declarations>
+            <Code Language="csharp">
+                <![CDATA[
+	protected $type$ _$name$ = null;
+    /// <summary>
+    /// $help$
+    /// </summary>
+    [Display(GroupName = "$group$", Name ="$name$", Description ="$help$")]
+    public $type$ $name$
+    {
+        get {
+            if (_$name$ == null) _$name$ = new $type$(this);
+            return _$name$;
+        }
+    }
+	$end$]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

@@ -191,7 +191,7 @@ namespace imbACE.Services.application
         protected void startUpProcess(String[] args, ILogBuilder _logger)
         {
             logger = _logger;
-
+            if (args == null) args = new string[] { };
             commandLineArguments.AddRange(args);
 
             AppDomain.CurrentDomain.UnhandledException += ReactTo_UnhandledException;

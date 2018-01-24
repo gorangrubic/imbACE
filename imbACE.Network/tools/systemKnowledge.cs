@@ -11,6 +11,11 @@
     using System.IO;
     using imbACE.Core.data.mysql;
     using imbSCI.Core.reporting;
+    using imbACE.Core;
+    using System.Data;
+    using imbSCI.DataComplex.extensions.data.formats;
+    using imbSCI.Core.extensions.text;
+    using System;
 
     #endregion
 
@@ -35,6 +40,32 @@
                 topLevelDomains.Load(dbSource.GetTable(nameof(topLevelDomains).ToLower()), logger, objectTableUpdatePolicy.overwrite);
 
                 whoIsServers.Load(dbSource.GetTable(nameof(whoIsServers).ToLower()), logger, objectTableUpdatePolicy.overwrite);
+
+
+                countries.Save();
+                topLevelDomains.Save();
+                whoIsServers.Save();
+
+            } else
+            {
+
+                countries.Load();
+
+                topLevelDomains.Load();
+                whoIsServers.Load();
+
+                //string tld_path = appManager.Application.folder_resources.findFile("tld.xlsx", SearchOption.AllDirectories);
+                //DataTable dt = tld_path.deserializeDataTable(imbSCI.Data.enums.reporting.dataTableExportEnum.excel);
+
+                //foreach(DataRow dr in dt.Rows)
+                //{
+                //    imbTopLevelDomain tld = new imbTopLevelDomain();
+                //    tld.domainName = dr[0].toStringSafe();
+                //    tld.nic = dr[3].toStringSafe("");
+                //    tld.domainName = dr[1].toStringSafe();
+                //    tld.countryName = dr[4].toStringSafe("international");
+                //}
+
 
             }
 
@@ -107,7 +138,8 @@
                 if (_topLevelDomains == null)
                 {
 
-                    _topLevelDomains = new objectTable<imbTopLevelDomain>(aceApplicationInfo.FOLDERNAME_REPORTS + Path.PathSeparator + "whoIsServerTable.xml", true, nameof(imbTopLevelDomain.domainName));
+                    String tp = appManager.Application.folder_resources.pathFor("network" + Path.DirectorySeparatorChar.ToString() + "topLevelDomains.xml");
+                    _topLevelDomains = new objectTable<imbTopLevelDomain>(tp, true, nameof(imbTopLevelDomain.domainName));
                 }
                 return _topLevelDomains;
 
@@ -135,7 +167,8 @@
 
                 if (_whoIsServers == null)
                 {
-                    _whoIsServers = new objectTable<imbWhoIsServer>(aceApplicationInfo.FOLDERNAME_REPORTS + Path.PathSeparator + "whoIsServerTable.xml", true, nameof(imbWhoIsServer.url));
+                    String tp = appManager.Application.folder_resources.pathFor("network" + Path.DirectorySeparatorChar.ToString() + "whoIsServerTable.xml");
+                    _whoIsServers = new objectTable<imbWhoIsServer>(tp, true, nameof(imbWhoIsServer.url));
                 }
 
                 return _whoIsServers;
@@ -164,7 +197,8 @@
 
                 if (_countries == null)
                 {
-                    _countries = new objectTable<imbCountryInfoEntry>(aceApplicationInfo.FOLDERNAME_REPORTS + Path.PathSeparator + "countryTable.xml", true, nameof(imbCountryInfoEntry.countryCode));
+                    String tp = appManager.Application.folder_resources.pathFor("network" + Path.DirectorySeparatorChar.ToString() + "countryTable.xml");
+                    _countries = new objectTable<imbCountryInfoEntry>(tp, true, nameof(imbCountryInfoEntry.countryName));
                 }
 
                 return _countries;

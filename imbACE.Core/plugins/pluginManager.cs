@@ -70,7 +70,9 @@ namespace imbACE.Core.plugins
         /// </value>
         public List<String> dllFileNames { get; protected set; } = new List<string>();
 
-       
+        protected override bool supportDirtyNaming { get { return false; } }
+
+
 
         /// <summary>
         /// Gets a new instance of plug-in, specified by type name of sub directory.name path

@@ -20,6 +20,24 @@ namespace imbACE.Services.consolePlugins
     public class aceConsolePluginManager : internalPluginManager<IAceConsolePlugin>
     {
 
+        public void LoadPlugins(ILogBuilder output)
+        {
+            loadPlugins(output);
+        }
+
+
+        public IAceConsolePlugin GetInstance(IAceAdvancedConsole console, String plugin_name, ILogBuilder output = null)
+        {
+            return GetPluginInstance(plugin_name, "", output, new Object[] { console });
+        }
+
+        protected override bool supportDirtyNaming
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
 }
