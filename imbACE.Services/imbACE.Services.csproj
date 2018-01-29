@@ -33,22 +33,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\imbACE.Services.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>imbACE.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="imbSCI.Core, Version=0.1.6598.31781, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Core.dll</HintPath>
+    <Reference Include="imbSCI.Core, Version=0.1.6603.21539, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.24\lib\net40\imbSCI.Core.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.Data, Version=0.1.6598.24488, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Data.dll</HintPath>
+    <Reference Include="imbSCI.Data, Version=0.1.6603.21536, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.24\lib\net40\imbSCI.Data.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.DataComplex, Version=0.1.6598.31787, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.DataComplex.dll</HintPath>
+    <Reference Include="imbSCI.DataComplex, Version=0.1.6603.21541, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.24\lib\net40\imbSCI.DataComplex.dll</HintPath>
     </Reference>
-    <Reference Include="imbSCI.Reporting, Version=0.1.6598.31787, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\imbSCI.0.1.2.16\lib\net40\imbSCI.Reporting.dll</HintPath>
+    <Reference Include="imbSCI.Reporting, Version=0.1.6603.21543, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\imbSCI.0.1.2.24\lib\net40\imbSCI.Reporting.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=3.20.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.3.20.2\lib\net40\MathNet.Numerics.dll</HintPath>
