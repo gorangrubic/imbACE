@@ -61,8 +61,9 @@ namespace imbACE.Core.commands.tree
         /// Builds the command tree.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="includeParentTypes">if set to <c>true</c> it will include only this type.</param>
         /// <returns></returns>
-        public static commandTree BuildCommandTree(IAceOperationSetExecutor source)
+        public static commandTree BuildCommandTree(IAceOperationSetExecutor source, Boolean includeParentTypes=true)
         {
 
             commandTree rootDesc = new commandTree();
@@ -73,7 +74,18 @@ namespace imbACE.Core.commands.tree
             rootDesc.helpLines.AddRange(source.helpHeader);
             commandTree output = rootDesc;
 
-            List<Type> types = source.GetType().GetBaseTypeList(true, true, typeof(aceOperationSetExecutorBase));
+            List<Type> types = new List<Type>();
+
+            if (includeParentTypes)
+            {
+                types = source.GetType().GetBaseTypeList(true, true, typeof(aceOperationSetExecutorBase));
+            }
+            else
+            {
+                types.Add(source.GetType());
+            }
+                
+                
             types.Reverse();
 
             foreach (Type t in types)

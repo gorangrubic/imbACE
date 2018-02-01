@@ -115,7 +115,7 @@ namespace imbACE.Services.console
         {
             get
             {
-                return aceApplicationInfo.FOLDERNAME_PROJECTS + Path.DirectorySeparatorChar + this.GetType().Name + "_jobs\\";
+                return aceApplicationInfo.FOLDERNAME_PROJECTS + Path.DirectorySeparatorChar;
             }
         }
 

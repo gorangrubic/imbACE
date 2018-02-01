@@ -331,19 +331,38 @@ namespace imbACE.Services.console
 
         [Display(GroupName = "help", Name = "ExportHelp", ShortName = "", Description = "Exports help file into current state project folder")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "Writes a txt file with content equal to the result of help command")]
-        /// <summary>Exports help file into current state project folder</summary> 
-        /// <remarks><para>Writes a txt file with content equal to the result of help command</para></remarks>
+        /// <summary>
+        /// Exports help file into current state project folder
+        /// </summary>
         /// <param name="filename">help.txt</param>
         /// <param name="open">true</param>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
+        /// <param name="onlyThisConsole">if set to <c>true</c> [only this console].</param>
+        /// <remarks>
+        /// Writes a txt file with content equal to the result of help command
+        /// </remarks>
+        /// <seealso cref="aceOperationSetExecutorBase" />
         public void aceOperation_helpExportHelp(
             [Description("help.txt")] String filename = "help.txt",
-            [Description("true")] Boolean open = true)
+            [Description("true")] Boolean open = true,
+            [Description("If true it will generate user manual only for this console")] Boolean onlyThisConsole = true)
         {
             builderForMarkdown mdBuilder = new builderForMarkdown();
 
-            commandSetTree.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
-            helpContent = mdBuilder.GetContent();
+            if (onlyThisConsole)
+            {
+                var cst = commandTreeTools.BuildCommandTree(this, false);
+                cst.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
+                helpContent = output.getLastLine();
+            }
+            else
+            {
+
+                commandSetTree.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
+                helpContent = mdBuilder.GetContent();
+            }
+
+
+           
 
             String p = workspace.folder.pathFor(filename);
             if (p.saveToFile(helpContent))

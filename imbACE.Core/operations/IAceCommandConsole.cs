@@ -82,18 +82,14 @@ namespace imbACE.Core.operations
         // [aceMenuItem(aceMenuItemAttributeRole.externalHelpFilename, "aceOperation_consoleHelp.md")]
         // [aceMenuItem(aceMenuItemAttributeRole.CmdParamList, "param:type;paramb:type;")]
         /// <summary>
-        /// Method of menu option Help (key:h). <args> expects param: param:type;paramb:type;
+        /// Aces the operation console help.
         /// </summary>
-        /// <param name="args"><seealso cref="aceOperationArgs"/> requered parameters: param:type;paramb:type;</param>
-        /// <remarks>
-        /// <para>Displays the command list and creates help file with the same content on the project folder</para>
-        /// <para>List of all supported commands, with default parameters</para>
-        /// <para>Message if item disabled: (disabled)</para>
-        /// </remarks>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
+        /// <param name="option">The option.</param>
+        /// <param name="onlyThisConsole">if set to <c>true</c> [only this console].</param>
         void aceOperation_consoleHelp(
             [Description("Help option: all, properties, plugins, modules, commands")]
-            aceCommandConsoleHelpOptions option=aceCommandConsoleHelpOptions.none
+            aceCommandConsoleHelpOptions option=aceCommandConsoleHelpOptions.none,
+            Boolean onlyThisConsole = true
         );
 
         /// <summary> Console title </summary>

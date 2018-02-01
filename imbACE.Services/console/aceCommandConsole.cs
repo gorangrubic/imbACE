@@ -155,12 +155,18 @@ namespace imbACE.Services.console
 
         [Display(GroupName = "console", Name = "Help", ShortName = "h", Description = "Provides Type-specific help content for the console, lists of all supported commands, plugins, local variables...")]
         [aceMenuItem(aceMenuItemAttributeRole.ExpandedHelp, "If help option is not specified, it will ask user for type of help should be displayed")]
-         /// <summary>Provides Type-specific help content for the console, lists of all supported commands, plugins, local variables...</summary> 
-        /// <remarks><para>If help option is not specified, it will ask user for type of help should be displayed</para></remarks>
+        /// <summary>
+        /// Provides Type-specific help content for the console, lists of all supported commands, plugins, local variables...
+        /// </summary>
         /// <param name="option">Type of help content to show, if not specified it prompts the user</param>
-        /// <seealso cref="aceOperationSetExecutorBase"/>
+        /// <param name="onlyThisConsole">if set to <c>true</c> [only this console].</param>
+        /// <remarks>
+        /// If help option is not specified, it will ask user for type of help should be displayed
+        /// </remarks>
+        /// <seealso cref="aceOperationSetExecutorBase" />
         public void aceOperation_consoleHelp(
-            [Description("Type of help content to show, if not specified it prompts the user")] aceCommandConsoleHelpOptions option = aceCommandConsoleHelpOptions.none
+            [Description("Type of help content to show, if not specified it prompts the user")] aceCommandConsoleHelpOptions option = aceCommandConsoleHelpOptions.none,
+            [Description("If true it will generate user manual only for this console")] Boolean onlyThisConsole = true
             )
         {
 
@@ -168,8 +174,19 @@ namespace imbACE.Services.console
             {
                 option = aceTerminalInput.askForEnum<aceCommandConsoleHelpOptions>("Select Help option:", aceCommandConsoleHelpOptions.full);
             }
-            commandSetTree.ReportCommandTree(output, false, 0, option);
-            helpContent = output.getLastLine();
+
+            if (onlyThisConsole)
+            {
+                var cst = commandTreeTools.BuildCommandTree(this, false);
+                cst.ReportCommandTree(output, false, 0, option);
+                helpContent = output.getLastLine();
+            }
+            else
+            {
+
+                commandSetTree.ReportCommandTree(output, false, 0, option);
+                helpContent = output.getLastLine();
+            }
         }
 
 
