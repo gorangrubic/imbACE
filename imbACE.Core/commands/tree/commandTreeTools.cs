@@ -188,6 +188,9 @@ namespace imbACE.Core.commands.tree
 
             foreach (PropertyInfo pi in properties)
             {
+                if (pi.DeclaringType.Name == "aceCommandConsole") continue;
+                if (pi.DeclaringType.Name == "aceAdvancedConsole") continue;
+
                 if (pi.PropertyType.GetInterfaces().Contains(typeof(IAceOperationSetExecutor)))
                 {
                     var plugin_instance = source.imbGetPropertySafe(pi) as IAceOperationSetExecutor;

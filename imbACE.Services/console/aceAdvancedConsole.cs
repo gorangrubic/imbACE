@@ -60,6 +60,8 @@ namespace imbACE.Services.console
     using imbACE.Core.application;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel;
+    using imbACE.Services.terminal.dialogs;
+    using imbACE.Services.terminal.dialogs.core;
 
     //using System.Windows.Forms;
     //using imbACE.Core.reporting;
@@ -302,7 +304,8 @@ namespace imbACE.Services.console
         public void aceOperation_scriptExecute(
             [Description("Filename for script to execute")] String filename = "script.ace",
             [Description("Delay milliseconds between execution of each line/commands")] Int32 delay = 5,
-            [Description("Number of times to repeat the script")] Int32 repeat = 1)
+            [Description("Number of times to repeat the script")] Int32 repeat = 1,
+            [Description("Text of the Yes/No confirmation box, if left blank it will not ask user to confirm script execution")] String askConfirmation = "")
         {
 
             if (filename == "*")
@@ -315,6 +318,24 @@ namespace imbACE.Services.console
 
             log("Script [" + filename + "] with [" + script.Count() + "] will execute [" + repeat + "] time/s.");
 
+            Boolean ok = true;
+            if (!askConfirmation.isNullOrEmpty())
+            {
+                ok = false;
+                var selected = imbACE.Services.terminal.dialogs.dialogs.openDialogWithOptions<String>(new String[] { "Confirm", "Cancel" }, askConfirmation, "Please confirm script [" + filename + "] execution.", dialogStyle.redDialog, dialogSize.mediumBox);
+
+              
+                if (selected == "Confirm")
+                {
+                    ok = true;
+                }
+
+            }
+            if (!ok)
+            {
+                log("Script [" + filename + "] execution canceled by user");
+                return;
+            }
             while (repeat > 0)
             {
                 executeScript(script, delay);
@@ -344,7 +365,7 @@ namespace imbACE.Services.console
         public void aceOperation_helpExportHelp(
             [Description("help.txt")] String filename = "help.txt",
             [Description("true")] Boolean open = true,
-            [Description("If true it will generate user manual only for this console")] Boolean onlyThisConsole = true)
+            [Description("If true it will generate user manual only for this console")] Boolean onlyThisConsole = false)
         {
             builderForMarkdown mdBuilder = new builderForMarkdown();
 
@@ -352,7 +373,7 @@ namespace imbACE.Services.console
             {
                 var cst = commandTreeTools.BuildCommandTree(this, false);
                 cst.ReportCommandTree(mdBuilder, false, 0, aceCommandConsoleHelpOptions.full);
-                helpContent = output.getLastLine();
+                helpContent = mdBuilder.getLastLine();
             }
             else
             {

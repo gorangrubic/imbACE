@@ -66,7 +66,13 @@ namespace imbACE.Core.commands.menu
         {
         }
 
-        public aceMenuItemMeta(Enum enumeration)
+        public aceMenuItemMeta(String option)
+        {
+            this[aceMenuItemAttributeRole.DisplayName] = option;
+
+        }
+
+            public aceMenuItemMeta(Enum enumeration)
         {
             Type t = enumeration.GetType();
             MemberInfo mi = t.findEnumerationMember(enumeration.ToString(), 0);

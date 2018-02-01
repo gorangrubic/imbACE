@@ -29,6 +29,10 @@
 // ------------------------------------------------------------------------------------------------------------------
 using imbACE.Core;
 using imbSCI.Core;
+using imbSCI.Core.data;
+using imbSCI.Core.extensions.data;
+using imbSCI.Core.collection;
+using imbSCI.Core.extensions;
 using imbSCI.Core.attributes;
 using imbSCI.Core.enums;
 using imbSCI.Core.extensions.text;
@@ -95,13 +99,16 @@ namespace imbACE.Core.commands.menu.core
 
         internal void deployMeta(aceMenuItemMeta meta, Object __metaObject)
         {
-            itemName = meta[aceMenuItemAttributeRole.DisplayName];
-            key = meta[aceMenuItemAttributeRole.Key];
-            itemRemarkEnabled = meta[aceMenuItemAttributeRole.EnabledRemarks];
-            itemRemarkDisabled = meta[aceMenuItemAttributeRole.DisabledRemarks];
-            helpLine = meta[aceMenuItemAttributeRole.Description];
 
-            metaStringData = meta[aceMenuItemAttributeRole.Meta];
+            //itemName 
+            //meta.TryGetValue(, out itemName);
+            itemName = meta.getEntrySafe(aceMenuItemAttributeRole.DisplayName, "");
+            key = meta.getEntrySafe(aceMenuItemAttributeRole.Key, "");
+            itemRemarkEnabled = meta.getEntrySafe(aceMenuItemAttributeRole.EnabledRemarks, "");
+            itemRemarkDisabled = meta.getEntrySafe(aceMenuItemAttributeRole.DisabledRemarks,"");
+            helpLine = meta.getEntrySafe(aceMenuItemAttributeRole.Description,"");
+
+            metaStringData = meta.getEntrySafe(aceMenuItemAttributeRole.Meta,"");
             _itemMetaInfo = meta;
             metaObject = __metaObject;
         }

@@ -82,8 +82,8 @@ namespace imbACE.Core.commands.tree
         public static void ReportCommandDesc(this commandTreeDescription item, ITextRender output, String cTitlePrefix = "")
         {
             String cTitle = cTitlePrefix;
-          
-            cTitle = cTitle.add(item.name, ".");
+
+            cTitle = cTitle.add(item.name, ".").Trim('.');
             //node.item.menuMeta[aceMenuItemAttributeRole.Category]
             //  cTitle = node.item.menuMeta.getEntrySafe(aceMenuItemAttributeRole.Category).add(cTitle, ".");
 
@@ -169,18 +169,18 @@ namespace imbACE.Core.commands.tree
             switch (node.nodeLevel)
             {
                 case commandTreeNodeLevel.parameter:
-                    output.AppendPair(node.path, node.memberMeta.relevantTypeName);
+                    output.AppendPair(node.path.Trim('.'), node.memberMeta.relevantTypeName);
                     
                     break;
                 case commandTreeNodeLevel.module:
-                    output.AppendPair(node.path, node.memberMeta.relevantTypeName);
+                    output.AppendPair(node.path.Trim('.'), node.memberMeta.relevantTypeName);
                     foreach (commandTreeDescription snode in node)
                     {
                         snode.ReportCommandNode(output, paginate, lastPageLine);
                     }
                     break;
                 case commandTreeNodeLevel.group:
-                    output.open("div", "Group: " + node.path, node.description);
+                    output.open("div", "Group: " + node.path.Trim('.'), node.description);
 
                     foreach (commandTreeDescription snode in node)
                     {
@@ -191,7 +191,7 @@ namespace imbACE.Core.commands.tree
                     output.AppendHorizontalLine();
                     break;
                 case commandTreeNodeLevel.plugin:
-                    output.open("div", "Plugin: " + node.path, node.description);
+                    output.open("div", "Plugin: " + node.path.Trim('.'), node.description);
 
                     foreach (commandTreeDescription tnode in node)
                     {
@@ -201,7 +201,7 @@ namespace imbACE.Core.commands.tree
                     output.AppendHorizontalLine();
                     break;
                 case commandTreeNodeLevel.type:
-                    output.open("div", "Console: " + node.path, node.description);
+                    output.open("div", "Console: " + node.path.Trim('.'), node.description);
 
                     foreach (commandTreeDescription tnode in node)
                     {
@@ -268,9 +268,9 @@ namespace imbACE.Core.commands.tree
         public static void ReportCommandTree(this commandTree tree, ITextRender output, Boolean paginate, Int32 lastPageLine = 0, aceCommandConsoleHelpOptions option=aceCommandConsoleHelpOptions.full)
         {
 
-            output.AppendHeading(tree.name, 1);
+            output.AppendHeading(tree.name.ToUpper(), 1);
 
-            output.AppendQuote(tree.description);
+            output.AppendParagraph(tree.description);
 
             if (tree.helpLines.Any())
             {
@@ -309,7 +309,7 @@ namespace imbACE.Core.commands.tree
                         foreach (MemberInfo mInfo in Enumerable.Where<MethodInfo>(methods, x => x.Name.StartsWith(aceMenuItemMeta.METHOD_PREFIX)))
                         {
                             
-                            lst.Add(pair.Key + "." +  mInfo.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX));
+                            lst.Add(pair.Key.add(mInfo.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX), "."));
                             
                         }
 
@@ -341,7 +341,7 @@ namespace imbACE.Core.commands.tree
 
                 foreach (var pair in tree.flatAccess)
                 {
-                    output.AppendPair(pair.Value.path, pair.Value.menuMeta.cmdParams.ToString(false, true, true), true, " ");
+                    output.AppendPair(pair.Value.path.Trim('.'), pair.Value.menuMeta.cmdParams.ToString(false, true, true), true, " ");
                 }
 
                 output.AppendHorizontalLine();

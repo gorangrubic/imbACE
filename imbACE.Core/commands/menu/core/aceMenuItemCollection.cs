@@ -258,16 +258,33 @@ namespace imbACE.Core.commands.menu.core
                 
                 foreach (T _item in _input)
                 {
-                    if (tp.isEnum())
-                    {
-                        aceMenuItemMeta itemMeta = new aceMenuItemMeta(_item as Enum);
+                if (tp.isEnum())
+                {
+                    aceMenuItemMeta itemMeta = new aceMenuItemMeta(_item as Enum);
 
-                        aceMenuItem item = new aceMenuItem(itemMeta, _item);
-                        setItem(item);
-                    } else
-                    {
-                        
-                    }
+                    aceMenuItem item = new aceMenuItem(itemMeta, _item);
+                    setItem(item);
+                }
+                else if (tp.isText())
+                {
+                    String it = _item as String;
+                    aceMenuItemMeta itemMeta = new aceMenuItemMeta();
+
+                    aceMenuItem item = new aceMenuItem(itemMeta, _item);
+                    item.itemName = it;
+
+                    setItem(item);
+                }
+                else
+                {
+                    String it = _item.toStringSafe();
+                    aceMenuItemMeta itemMeta = new aceMenuItemMeta();
+
+                    aceMenuItem item = new aceMenuItem(itemMeta, _item);
+                    item.itemName = it;
+
+                    setItem(item);
+                }
                     
                 }
             }
