@@ -550,6 +550,13 @@ namespace imbACE.Services.terminal
             
         }*/
 
+        /// <summary>
+        /// Asks for string input - in inline mode
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <param name="defans">Default answer</param>
+        /// <param name="loger">The loger.</param>
+        /// <returns></returns>
         public static String askForStringInline(String question, String defans, ILogBuilder loger = null)
         {
             Console.WriteLine();

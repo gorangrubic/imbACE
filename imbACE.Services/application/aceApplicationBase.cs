@@ -67,7 +67,7 @@ namespace imbACE.Services.application
 
 
     /// <summary>
-    /// 
+    /// Common Base class for imbACE Applications
     /// </summary>
     /// <seealso cref="imbACE.Core.application.IAceApplicationBase" />
     public abstract class aceApplicationBase : IAceApplicationBase, IAceLogable
@@ -82,6 +82,12 @@ namespace imbACE.Services.application
         //public const String FOLDERNAME_LOGS = "logs";
 
 
+        /// <summary>
+        /// Gets the application name
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public String name
         {
             get
@@ -197,12 +203,22 @@ namespace imbACE.Services.application
             AppDomain.CurrentDomain.UnhandledException += ReactTo_UnhandledException;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
+
+
+
+            String appDirectory = AppDomain.CurrentDomain.BaseDirectory; //Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().GetName().CodeBase);
+            Environment.CurrentDirectory = appDirectory;
+
+            
+
+
             state = new aceApplicationState();
 
             setAboutInformation();
 
+            
 
-            folder = new DirectoryInfo(Directory.GetCurrentDirectory());
+            folder = new DirectoryInfo(appDirectory);
 
             // creating folders subsystem
             folder_cache = folder.Add(aceApplicationInfo.FOLDERNAME_CACHE, "Cache", "Repository of [" + name + "] application general cache");

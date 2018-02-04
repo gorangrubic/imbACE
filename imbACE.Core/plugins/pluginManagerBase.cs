@@ -21,6 +21,7 @@ namespace imbACE.Core.plugins
     /// </summary>
     public abstract class pluginManagerBase
     {
+        public static Boolean DOSHOWLOGS { get; set; } = false;
 
         protected aceConcurrentDictionary<Type> dirtyDictionary { get; set; } = new aceConcurrentDictionary<Type>();
 
@@ -83,6 +84,8 @@ namespace imbACE.Core.plugins
         /// <returns></returns>
         protected Type resolvePlugin(String plugin_name, ILogBuilder output)
         {
+            if (!DOSHOWLOGS) output = null;
+
             if (!bannedShortNames.ContainsKey(plugin_name))
             {
                 if (pluginTypesByName.ContainsKey(plugin_name))
@@ -132,6 +135,7 @@ namespace imbACE.Core.plugins
         /// <param name="output">The output.</param>
         protected void registerPlugin(Type type, String sourceDllPath, ILogBuilder output)
         {
+            if (!DOSHOWLOGS) output = null;
             if (!bannedShortNames.ContainsKey(type.Name))
             {
 

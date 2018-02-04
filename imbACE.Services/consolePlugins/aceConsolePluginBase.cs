@@ -154,7 +154,7 @@ namespace imbACE.Services.consolePlugins
         protected builderForLog _output;
         private ITextRender _response;
 
-        public ILogBuilder output
+        public virtual ILogBuilder output
         {
             get
             {
@@ -189,12 +189,11 @@ namespace imbACE.Services.consolePlugins
 
         protected void prepare()
         {
-            if (output == null)
-            {
+           
                 _output = new builderForLog();
 
                 aceLog.consoleControl.setAsOutput(_output, consoleTitle);
-            }
+           
 
         }
 
@@ -208,7 +207,7 @@ namespace imbACE.Services.consolePlugins
         {
             name = __name;
             _consoleHelp = __help;
-            _output = __output;
+            //_output = __output;
             prepare();
         }
 

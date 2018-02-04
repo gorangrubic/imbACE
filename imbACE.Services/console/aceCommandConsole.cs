@@ -487,7 +487,7 @@ namespace imbACE.Services.console
         public void executeCommand(String input)
         {
             lastInput = input;
-            history.Add(input);
+           
 
             String input_proper = input.Trim().ToLower();
             response.getLastLine(true);
@@ -545,6 +545,11 @@ namespace imbACE.Services.console
                 if (entry.invoke())
                 {
                     if (saveClipboard) clipboard.clipboardSetText(response.getLastLine());
+
+                    if (!entry.commentedOut)
+                    {
+                        history.Add(input);
+                    }
                 }
                 else
                 {
@@ -575,7 +580,7 @@ namespace imbACE.Services.console
         public Boolean saveClipboard { get; set; } = false;
 
 
-        private String _linePrefix = ">";//G:\imbWBI_Test\projects\itmPlugin\itm01\industryTermModelProject.xml
+        private String _linePrefix = "";//G:\imbWBI_Test\projects\itmPlugin\itm01\industryTermModelProject.xml
         /// <summary>
         /// Prefix to show in the command line
         /// </summary>
@@ -601,7 +606,13 @@ namespace imbACE.Services.console
 
 
 
-        public List<String> history { get; set; } = new List<string>();
+        /// <summary>
+        /// Commands executed earlier
+        /// </summary>
+        /// <value>
+        /// The history.
+        /// </value>
+        public List<String> history { get;  set; } = new List<string>();
 
         IAceConsoleScript IAceCommandConsole.scriptRunning => throw new NotImplementedException();
 
@@ -640,6 +651,26 @@ namespace imbACE.Services.console
 
         public const Boolean useActiveInput = false;
 
+
+        /// <summary>
+        /// Default command that will be executed on empty imput
+        /// </summary>
+        /// <value>
+        /// The default command.
+        /// </value>
+        public virtual String DefaultCommand
+        {
+            get
+            {
+                if (history.Any())
+                {
+                    return "";
+                }
+                return "help";
+            }
+        }
+
+
         /// <summary>
         /// Starts the console
         /// </summary>
@@ -660,6 +691,8 @@ namespace imbACE.Services.console
             aceLog.consoleControl.setAsOutput(output);
             aceLog.consoleControl.setAsOutput(response);
 
+            aceLog.consoleControl.makeSureHaveDifferentColors(output, response);
+
            // commandSetTree = commandTreeTools.BuildCommandTree(this);
 
             output.AppendLine(consoleTitle);
@@ -673,6 +706,8 @@ namespace imbACE.Services.console
 
             onStartUp();
 
+
+            history.Clear();
 
             while (consoleIsRunning)
             {
@@ -705,7 +740,7 @@ namespace imbACE.Services.console
                     }
                 } else
                 {
-                    String input = aceTerminalInput.askForStringInline(linePrefix.or(" > "), "help");
+                    String input = aceTerminalInput.askForStringInline(linePrefix.or(" > "), DefaultCommand);
                     executeCommand(input);
                 }
                 

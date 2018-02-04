@@ -172,14 +172,10 @@ namespace imbACE.Services
         {
             unhandledExceptionCount++;
 
-            String msg = "Unhandled exception :: " + e.GetType().Name + Environment.NewLine;
-            msg += e.Message + Environment.NewLine;
+           
 
-            msg += e.TargetSite + Environment.NewLine;
-
-            msg += e.Source + Environment.NewLine;
-
-            msg += e.StackTrace + Environment.NewLine;
+            String msg = e.LogException("Unhandled Exception :: " + appManager.AppInfo.applicationName + ")");
+           
 
 
             if (client != null)

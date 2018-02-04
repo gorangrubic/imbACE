@@ -73,7 +73,7 @@ namespace imbACE.Core.core
         /// <summary>
         /// static and autoinitiated object
         /// </summary>
-        public static IAceLogToConsoleControl consoleControl
+        public static aceLogToConsoleControl consoleControl
         {
             get
             {

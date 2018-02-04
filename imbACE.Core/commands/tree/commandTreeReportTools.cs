@@ -300,7 +300,7 @@ namespace imbACE.Core.commands.tree
 
                 foreach (var pair in tree.plugins)
                 {
-                    output.AppendPair(pair.Key, pair.Value.GetType().Name, true, ":");
+                    output.AppendPair(pair.Key.Trim('.'), pair.Value.GetType().Name, true, ":");
                     
                     
                     var methods = pair.Value.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public);
@@ -309,7 +309,7 @@ namespace imbACE.Core.commands.tree
                         foreach (MemberInfo mInfo in Enumerable.Where<MethodInfo>(methods, x => x.Name.StartsWith(aceMenuItemMeta.METHOD_PREFIX)))
                         {
                             
-                            lst.Add(pair.Key.add(mInfo.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX), "."));
+                            lst.Add(pair.Key.add(mInfo.Name.removeStartsWith(aceMenuItemMeta.METHOD_PREFIX), ".").Trim('.'));
                             
                         }
 
@@ -335,17 +335,17 @@ namespace imbACE.Core.commands.tree
 
             }
 
-            if (option.HasFlag(aceCommandConsoleHelpOptions.brief))
-            {
-                output.AppendHeading("Overview", 2);
+            //if (option.HasFlag(aceCommandConsoleHelpOptions.brief))
+            //{
+            //    output.AppendHeading("Overview", 2);
 
-                foreach (var pair in tree.flatAccess)
-                {
-                    output.AppendPair(pair.Value.path.Trim('.'), pair.Value.menuMeta.cmdParams.ToString(false, true, true), true, " ");
-                }
+            //    foreach (var pair in tree.flatAccess)
+            //    {
+            //        output.AppendPair(pair.Value.path.Trim('.'), pair.Value.menuMeta.cmdParams.ToString(false, true, true), true, " ");
+            //    }
 
-                output.AppendHorizontalLine();
-            }
+            //    output.AppendHorizontalLine();
+            //}
 
             if (option.HasFlag(aceCommandConsoleHelpOptions.commands))
             {
